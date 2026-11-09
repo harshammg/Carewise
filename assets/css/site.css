@@ -635,7 +635,7 @@ body.nav-open .nav-toggle .icon-menu {
   inset: 0;
   z-index: 55;
   background: var(--cream);
-  padding: 7.5rem var(--gutter) 6rem;
+  padding: 8.5rem var(--gutter) 3rem;
   overflow-y: auto;
   transform: translateY(-8px);
   opacity: 0;
@@ -650,30 +650,43 @@ body.nav-open .drawer {
 body.nav-open {
   overflow: hidden;
 }
+.drawer-inner {
+  display: grid;
+  gap: 1.5rem;
+}
 .drawer-group + .drawer-group {
-  margin-top: 1.75rem;
+  margin-top: 0;
 }
 .drawer-group h4 {
   font-family: var(--font-body);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--terracotta);
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.35rem;
 }
-.drawer a {
+.drawer a:not(.btn) {
   display: block;
-  padding: 0.7rem 0;
+  padding: 0.65rem 0;
   font-family: var(--font-display);
-  font-size: 1.6rem;
+  font-size: 1.35rem;
+  line-height: 1.2;
   border-bottom: 1px solid var(--line);
 }
 .drawer a[aria-current="page"] {
   color: var(--teal);
 }
 .drawer .btn {
-  margin-top: 2rem;
+  margin-top: 0.5rem;
   width: 100%;
+  font-family: var(--font-body);
+  font-size: 1rem;
+}
+.drawer::-webkit-scrollbar {
+  display: none;
+}
+.drawer {
+  scrollbar-width: none;
 }
 @media (min-width: 1024px) {
   .drawer {
@@ -1997,10 +2010,7 @@ html {
     align-items: flex-start;
   }
   .drawer {
-    padding-top: 7rem;
-  }
-  .drawer a {
-    font-size: 1.4rem;
+    padding-top: 8rem;
   }
 }
 @media (max-width: 400px) {
@@ -2266,5 +2276,68 @@ html {
     grid-template-columns: auto 1fr auto;
     gap: 1.5rem;
     padding: 1.5rem 2rem;
+  }
+}
+
+/* ---- Facilities grid ---- */
+.fac-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+.fac-tile {
+  margin: 0;
+  position: relative;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--sand);
+  aspect-ratio: 4 / 3;
+}
+.fac-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+.fac-tile:hover img {
+  transform: scale(1.05);
+}
+.fac-tile figcaption {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 2.2rem 1rem 0.9rem;
+  background: linear-gradient(180deg, transparent, rgba(8, 36, 61, 0.8));
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.fac-tile--wide {
+  grid-column: span 2;
+  aspect-ratio: 16 / 9;
+}
+@media (min-width: 900px) {
+  .fac-grid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 200px;
+    grid-auto-flow: dense;
+    gap: 1.25rem;
+  }
+  .fac-tile,
+  .fac-tile--wide {
+    aspect-ratio: auto;
+  }
+  .fac-tile--wide {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+}
+
+@media (min-width: 560px) and (max-width: 1023px) {
+  .drawer-inner {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2.5rem;
+  }
+  .drawer .btn {
+    grid-column: 1 / -1;
   }
 }

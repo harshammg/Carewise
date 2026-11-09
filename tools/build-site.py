@@ -118,7 +118,7 @@ def header(slug):
         </button>
       </div>
     </header>
-    <div class="drawer" id="drawer">{drawer}</div>
+    <div class="drawer" id="drawer"><div class="drawer-inner">{drawer}</div></div>
     <main>'''
 
 
@@ -362,6 +362,37 @@ def instagram_section():
     return section(head, "", "instagram")
 
 
+FACILITY = [
+    ("facility-06.jpg", "Carewise Centre entrance, Mysuru"),
+    ("facility-09.jpg", "Rehabilitation ward with therapy area"),
+    ("facility-02.jpg", "Private room with attendant bed"),
+    ("facility-01.jpg", "Reception and family lounge"),
+    ("facility-10.jpg", "General ward beds with privacy curtains"),
+    ("facility-05.jpg", "Bright corridor with natural light"),
+    ("facility-03.jpg", "Private room with adjustable bed"),
+    ("facility-11.jpg", "Nursing station view of the ward"),
+    ("facility-04.jpg", "Private room with window view"),
+    ("facility-08.jpg", "Private room, ready for admission"),
+    ("facility-07.jpg", "Waiting lounge beside the therapy rooms"),
+    ("facility-13.jpg", "Inauguration of Carewise Centre"),
+    ("facility-14.jpg", "Lamp lighting at the inauguration"),
+    ("facility-12.jpg", "Opening day at the Centre"),
+]
+
+
+def facility_section(limit=10):
+    tiles = "".join(f'''
+            <figure class="fac-tile{' fac-tile--wide' if i in (0, 7) else ''} reveal">
+              <img src="assets/img/facility/{f}" alt="{a}" loading="lazy" />
+              <figcaption>{a}</figcaption>
+            </figure>''' for i, (f, a) in enumerate(FACILITY[:limit]))
+    return section(section_head("Our facilities at Mysuru", "A calm, purpose-built centre for recovery",
+                                "Private rooms, a rehabilitation ward, therapy space and a family lounge, a short drive from anywhere in Mysuru.")
+                   + f'<div class="fac-grid">{tiles}</div>'
+                   + f'<p class="center" style="margin-top:2.5rem"><a class="btn btn-outline" href="gallery.html">See all photos {ico("arrow-right")}</a></p>',
+                   "", "facilities")
+
+
 ROOMS = f'''
           <div class="grid grid-2">
             <article class="room reveal">
@@ -478,7 +509,7 @@ def home_page():
         ("How quickly can care start?", "Home care usually begins within 24 to 48 hours of assessment. Admission to the centre can often be arranged the same day."),
     ]), "bg-sand")
 
-    return hero + centre_spot + neuro + quote + conditions + rooms + stats(dark=True) + instagram + home_row + stories + questions + cta("Ready to visit Carewise Centre?", "Book a walk-through with our care coordinator, or call to discuss your parent's recovery.")
+    return hero + centre_spot + neuro + quote + facility_section() + conditions + rooms + stats(dark=True) + instagram + home_row + stories + questions + cta("Ready to visit Carewise Centre?", "Book a walk-through with our care coordinator, or call to discuss your parent's recovery.")
 
 
 def about_page():
@@ -588,12 +619,11 @@ def team_page():
 
 
 def gallery_page():
-    tiles = [("room", "wide"), ("room2", ""), ("home", ""), ("hero", ""), ("family", "wide")]
-    grid = "".join(f'<figure class="{c} reveal">{img(k)}<figcaption>{IMG[k][1]}</figcaption></figure>' for k, c in tiles)
-    body = page_hero("Facility gallery", "Take a look <span class='serif-italic'>inside Carewise.</span>",
-                     "Our rooms, common spaces and the people who make them feel like home.")
+    grid = "".join(f'<figure class="{"wide " if i in (0, 5, 10) else ""}reveal"><img src="assets/img/facility/{f}" alt="{a}" loading="lazy" /><figcaption>{a}</figcaption></figure>' for i, (f, a) in enumerate(FACILITY))
+    body = page_hero("Facility gallery", "Take a look <span class='serif-italic'>inside Carewise Centre.</span>",
+                     "Our rooms, rehabilitation ward, therapy space and the day we opened our doors in Mysuru.")
     body += section(f'<div class="gallery">{grid}</div>')
-    body += cta("Prefer to see it in person?", "Book a visit and walk through the centre with our coordinator.")
+    body += cta("Prefer to see it in person?", "Book a visit and walk through the Centre with our coordinator.")
     return body
 
 

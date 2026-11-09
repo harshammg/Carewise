@@ -410,16 +410,6 @@ html.js .reveal[data-anim="up"]:not(.in) {
   overflow: visible;
 }
 
-/* Header shrinks when scrolled */
-.header .wrap {
-  transition: height 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
-}
-body.scrolled .header .wrap {
-  height: 3.75rem;
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 10px 30px -14px rgba(29, 39, 39, 0.35);
-}
-
 /* Stats count-up glow */
 .stat b {
   transition: text-shadow 0.4s;

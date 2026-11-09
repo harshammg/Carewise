@@ -349,8 +349,6 @@ def instagram_section():
               <p class="lead">Everyday life at the Carewise Centre and the families we care for, straight from our Instagram.</p>
             </div>
             <div class="ig-tools">
-              <button class="ig-arrow" type="button" data-dir="-1" aria-label="Previous posts">{ico("arrow-left")}</button>
-              <button class="ig-arrow" type="button" data-dir="1" aria-label="Next posts">{ico("arrow-right")}</button>
               <a class="btn btn-dark" href="{INSTAGRAM_URL}" target="_blank" rel="noopener">{ico("instagram") if False else '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>'} Follow on Instagram</a>
             </div>
           </div>

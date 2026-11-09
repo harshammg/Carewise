@@ -121,16 +121,6 @@
       })
       .catch(function () {});
   }
-  if (igRow) {
-    document.querySelectorAll(".ig-arrow").forEach(function (b) {
-      b.addEventListener("click", function () {
-        var card = igRow.querySelector(".ig-card");
-        var step = card ? card.getBoundingClientRect().width + 20 : 360;
-        igRow.scrollBy({ left: step * parseInt(b.getAttribute("data-dir"), 10), behavior: "smooth" });
-      });
-    });
-  }
-
   // Contact form: no backend wired yet, so hand off to WhatsApp with the message pre-filled.
   var form = document.querySelector("form[data-contact]");
   if (form) {

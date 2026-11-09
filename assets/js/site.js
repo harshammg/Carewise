@@ -98,17 +98,19 @@
   // If the function is missing or has no token, the embedded posts stay as fallback.
   var igRow = document.querySelector("[data-ig]");
   if (igRow && window.fetch) {
-    fetch("/api/instagram?limit=12", { headers: { Accept: "application/json" } })
+    var igType = igRow.getAttribute("data-ig-type") || "";
+    fetch("/api/instagram?limit=12" + (igType ? "&type=" + igType : ""), { headers: { Accept: "application/json" } })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (data) {
         if (!data || !data.items || !data.items.length) return;
+        var acct = igRow.getAttribute("data-ig-account");
         var html = data.items.map(function (m) {
           var cap = (m.caption || "").replace(/[<>&"]/g, function (c) {
             return { "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c];
           });
           var isVideo = m.type === "VIDEO";
           return (
-            '<li class="ig-card ig-card--live">' +
+            '<li class="ig-card ig-card--live" data-account="' + acct + '">' +
             '<a href="' + m.url + '" target="_blank" rel="noopener" aria-label="Open Instagram post">' +
             '<img src="' + m.image + '" alt="' + (cap || "Instagram post") + '" loading="lazy" />' +
             (isVideo ? '<span class="ig-badge">' + '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>' : "") +
@@ -116,8 +118,11 @@
             "</a></li>"
           );
         }).join("");
-        igRow.innerHTML = html;
+        igRow.querySelectorAll('[data-account="' + acct + '"]').forEach(function (el) { el.remove(); });
+        igRow.insertAdjacentHTML("afterbegin", html);
         igRow.classList.add("ig-row--live");
+        var empty = document.querySelector("[data-ig-empty]");
+        if (empty) empty.remove();
       })
       .catch(function () {});
   }

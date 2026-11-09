@@ -3,7 +3,7 @@
 // Instagram Login") in the project's environment variables. Responses are
 // cached at the edge for an hour, so Instagram is called at most ~24x/day.
 
-const FIELDS = "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp";
+const FIELDS = "id,caption,media_type,media_product_type,media_url,thumbnail_url,permalink,timestamp";
 
 module.exports = async function handler(req, res) {
   const token = process.env.INSTAGRAM_ACCESS_TOKEN;
@@ -27,11 +27,14 @@ module.exports = async function handler(req, res) {
       res.status(502).json({ error: (data.error && data.error.message) || "Instagram request failed" });
       return;
     }
+    const reelsOnly = String(req.query.type || "").toLowerCase() === "reels";
     const items = (data.data || [])
       .filter((m) => m.media_type !== "CAROUSEL_ALBUM" || m.media_url)
+      .filter((m) => !reelsOnly || m.media_product_type === "REELS" || (m.media_type === "VIDEO" && !m.media_product_type))
       .map((m) => ({
         id: m.id,
         type: m.media_type,
+        product: m.media_product_type || "",
         image: m.media_type === "VIDEO" ? m.thumbnail_url || m.media_url : m.media_url,
         caption: (m.caption || "").slice(0, 160),
         url: m.permalink,

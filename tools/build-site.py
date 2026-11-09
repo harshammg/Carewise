@@ -132,6 +132,7 @@ def footer():
             {brand(white=True)}
             <p>Mysuru's first palliative care centre. Doctor-guided, dignified care for your parents, at our centre or in their home.</p>
             <div class="social">
+              <a href="https://www.instagram.com/senior_sambhrama/" aria-label="Senior Sambhrama on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l4.5-2.5v9L15 14"/><rect x="2" y="6" width="13" height="12" rx="2"/></svg></a>
               <a href="https://www.instagram.com/care_wise_/" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
               <a href="https://linkedin.com/company/carewise" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a>
               <a href="{WA}" aria-label="WhatsApp">{ico("message-circle")}</a>
@@ -336,29 +337,40 @@ HOME_SERVICES = [
 
 INSTAGRAM_HANDLE = "care_wise_"
 INSTAGRAM_URL = f"https://www.instagram.com/{INSTAGRAM_HANDLE}/"
-# Post shortcodes shown in the Instagram strip (newest first). Update to refresh the feed.
-INSTAGRAM_POSTS = ["CNmEuzLrTh0", "CNOkXDWrLIW", "CMWU74XLWYZ", "CMRGBtfrEkU",
-                   "CL6tSC2LFdu", "CL4Yj8ArRl1", "CLWenmlLXsk", "CLSIp7rLh_K"]
+# Accounts shown in the reels strip, in order. Each entry: (handle, [reel shortcodes, newest first]).
+# Shortcode = the part after /reel/ in a reel URL. The live API (when configured) refreshes @care_wise_.
+INSTAGRAM_ACCOUNTS = [
+    ("care_wise_", []),
+    ("senior_sambhrama", ["DfeODzQhmtJ", "DfbdvpwPID-", "DfZCed7hSbx", "DfUOTNahB09", "DfLvlK5BsyF",
+                          "DfJY3eAhxHK", "DfFodytzOYe", "DfE5kdwBbBE", "DfEK0yWhxkx", "DfDGTsjBIL0"]),
+]
 
 
 def instagram_section():
-    cards = "".join(f'''
-            <li class="ig-card">
-              <iframe src="https://www.instagram.com/p/{code}/embed/" title="Instagram post by @{INSTAGRAM_HANDLE}" loading="lazy" allowtransparency="true" scrolling="no" frameborder="0"></iframe>
-            </li>''' for code in INSTAGRAM_POSTS)
+    cards = ""
+    for handle, codes in INSTAGRAM_ACCOUNTS:
+        cards += "".join(f'''
+            <li class="ig-card ig-card--reel" data-account="{handle}">
+              <iframe src="https://www.instagram.com/reel/{code}/embed/" title="Instagram reel by @{handle}" loading="lazy" allowtransparency="true" scrolling="no" frameborder="0"></iframe>
+            </li>''' for code in codes)
+    row = f'<ul class="ig-row ig-row--reels reveal" data-ig data-ig-type="reels" data-ig-account="{INSTAGRAM_HANDLE}">{cards}</ul>'
+    if not cards:
+        row += f'''
+          <div class="ig-empty reveal" data-ig-empty>
+            <span class="ico-ring">{ico("clapperboard")}</span>
+            <div><h3>New reels are on their way</h3><p>Follow <a href="{INSTAGRAM_URL}" target="_blank" rel="noopener">@{INSTAGRAM_HANDLE}</a> to see them first.</p></div>
+          </div>'''
+    ig_svg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>'
+    follows = "".join(f'<a class="btn {"btn-dark" if i == 0 else "btn-outline"}" href="https://www.instagram.com/{h}/" target="_blank" rel="noopener">{ig_svg} @{h}</a>' for i, (h, _) in enumerate(INSTAGRAM_ACCOUNTS))
     head = f'''
           <div class="ig-head reveal">
             <div>
               <span class="eyebrow">Follow our journey</span>
-              <h2>Moments from <span class="serif-italic">@{INSTAGRAM_HANDLE}</span></h2>
-              <p class="lead">Everyday life at the Carewise Centre and the families we care for, straight from our Instagram.</p>
+              <h2>Reels from <span class="serif-italic">Carewise &amp; Senior Sambhrama</span></h2>
+              <p class="lead">Short films of everyday life at the Carewise Centre, our community events and the families we care for, straight from Instagram.</p>
             </div>
-            <div class="ig-tools">
-              <a class="btn btn-dark" href="{INSTAGRAM_URL}" target="_blank" rel="noopener">{ico("instagram") if False else '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>'} Follow on Instagram</a>
-            </div>
-          </div>
-          <ul class="ig-row reveal" data-ig>{cards}
-          </ul>'''
+            <div class="ig-tools">{follows}</div>
+          </div>{row}'''
     return section(head, "", "instagram")
 
 

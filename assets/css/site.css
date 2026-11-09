@@ -2341,3 +2341,50 @@ html {
     grid-column: 1 / -1;
   }
 }
+
+/* Reels: vertical cards */
+.ig-row--reels {
+  grid-auto-columns: min(72vw, 17rem);
+}
+.ig-row--reels .ig-card {
+  height: auto;
+  aspect-ratio: 9 / 16;
+}
+.ig-row--reels .ig-card--reel iframe {
+  height: 100%;
+}
+.ig-row--reels .ig-card--live {
+  aspect-ratio: 9 / 16;
+}
+.ig-tools .btn svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+.ig-row:empty {
+  display: none;
+}
+.ig-empty {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  background: var(--white);
+  border: 1px dashed var(--line);
+  border-radius: var(--r-lg);
+  padding: 1.5rem 1.75rem;
+}
+.ig-empty .ico-ring {
+  margin: 0;
+  flex-shrink: 0;
+}
+.ig-empty h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+.ig-empty p {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.ig-empty a {
+  color: var(--teal);
+  font-weight: 600;
+}

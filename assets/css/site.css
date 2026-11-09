@@ -1997,3 +1997,79 @@ html {
     max-width: none;
   }
 }
+
+/* ---- Instagram strip ---- */
+.ig-head {
+  display: grid;
+  gap: 1.5rem;
+  align-items: end;
+  margin-bottom: 2.5rem;
+}
+.ig-head .lead {
+  color: var(--muted);
+  max-width: 34rem;
+}
+.ig-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.ig-arrow {
+  width: 2.9rem;
+  height: 2.9rem;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--teal);
+  display: grid;
+  place-items: center;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.ig-arrow:hover {
+  background: var(--teal);
+  color: var(--white);
+  transform: translateY(-1px);
+}
+.ig-arrow svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+.ig-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(86vw, 22rem);
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 0.25rem var(--gutter) 1rem;
+  margin-inline: calc(-1 * var(--gutter));
+  scrollbar-width: thin;
+  scrollbar-color: var(--sand-deep) transparent;
+}
+.ig-card {
+  scroll-snap-align: start;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  height: 30rem;
+  box-shadow: var(--shadow-sm);
+}
+.ig-card iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+@media (min-width: 900px) {
+  .ig-head {
+    grid-template-columns: 1fr auto;
+  }
+}
+@media (max-width: 719px) {
+  .ig-card {
+    height: 27rem;
+  }
+}

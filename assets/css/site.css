@@ -2400,14 +2400,15 @@ html {
   font-weight: 600;
 }
 
-/* ---- Crossfade slideshow ---- */
+/* ---- Slideshow: wipe-in from the right with a slow zoom ---- */
 .slideshow {
   position: relative;
   aspect-ratio: 4 / 3;
   border-radius: var(--r-lg);
   overflow: hidden;
   box-shadow: var(--shadow-md);
-  background: var(--sand);
+  background: var(--ink);
+  isolation: isolate;
 }
 .slideshow img {
   position: absolute;
@@ -2416,18 +2417,45 @@ html {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transform: scale(1.06);
-  transition: opacity 1.1s ease, transform 6s linear;
+  z-index: 0;
+  clip-path: inset(0 0 0 100%);
+  transform: translateX(8%) scale(1.08);
+  transition: clip-path 1s cubic-bezier(0.77, 0, 0.18, 1), transform 1s cubic-bezier(0.77, 0, 0.18, 1), opacity 0.4s ease, filter 1s ease;
+  will-change: clip-path, transform;
 }
 .slideshow img.is-active {
   opacity: 1;
-  transform: scale(1);
+  z-index: 2;
+  clip-path: inset(0 0 0 0);
+  transform: translateX(0) scale(1);
+  animation: slideZoom 5s linear 1s forwards;
+}
+.slideshow img.is-prev {
+  opacity: 1;
+  z-index: 1;
+  clip-path: inset(0 0 0 0);
+  transform: translateX(-10%) scale(1.04);
+  filter: brightness(0.55);
+}
+@keyframes slideZoom {
+  to {
+    transform: translateX(0) scale(1.07);
+  }
+}
+.slideshow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 60%, rgba(8, 36, 61, 0.35));
 }
 .slideshow-dots {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0.9rem;
+  z-index: 4;
   display: flex;
   justify-content: center;
   gap: 0.35rem;
@@ -2435,18 +2463,44 @@ html {
 .slideshow-dots span {
   width: 0.4rem;
   height: 0.4rem;
-  border-radius: 50%;
+  border-radius: 999px;
   background: rgba(255, 255, 255, 0.5);
   transition: background 0.3s, width 0.3s;
+  position: relative;
+  overflow: hidden;
 }
 .slideshow-dots span.is-active {
+  background: rgba(255, 255, 255, 0.35);
+  width: 1.6rem;
+}
+.slideshow-dots span.is-active::after {
+  content: "";
+  position: absolute;
+  inset: 0;
   background: var(--accent);
-  width: 1.1rem;
-  border-radius: 999px;
+  transform-origin: left;
+  animation: dotFill var(--slide-every, 4s) linear forwards;
+}
+@keyframes dotFill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .slideshow img {
     transition: opacity 0.4s;
+    transform: none !important;
+    clip-path: none;
+    animation: none;
+  }
+  .slideshow img.is-prev {
+    opacity: 0;
+  }
+  .slideshow-dots span.is-active::after {
+    animation: none;
     transform: none;
   }
 }

@@ -74,13 +74,22 @@
     var dots = box.querySelectorAll(".slideshow-dots span");
     if (imgs.length < 2) return;
     var i = 0, every = parseInt(box.getAttribute("data-interval"), 10) || 4000;
+    box.style.setProperty("--slide-every", every + "ms");
     setInterval(function () {
       if (document.hidden) return;
-      imgs[i].classList.remove("is-active");
-      if (dots[i]) dots[i].classList.remove("is-active");
+      var prev = i;
+      imgs.forEach(function (im) { im.classList.remove("is-prev"); });
+      imgs[prev].classList.remove("is-active");
+      imgs[prev].classList.add("is-prev");
+      if (dots[prev]) dots[prev].classList.remove("is-active");
       i = (i + 1) % imgs.length;
       imgs[i].classList.add("is-active");
-      if (dots[i]) dots[i].classList.add("is-active");
+      if (dots[i]) {
+        // restart the fill animation on the new dot
+        dots[i].classList.remove("is-active");
+        void dots[i].offsetWidth;
+        dots[i].classList.add("is-active");
+      }
     }, every);
   });
 

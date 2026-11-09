@@ -101,7 +101,7 @@ def header(slug):
     return f'''
     <div class="topbar">
       <div class="wrap">
-        <span class="topbar-note">Mysuru's first palliative care centre · Trusted by families for 6+ years</span>
+        <span class="topbar-note" data-type='["Mysuru&#39;s first palliative care centre","Trusted by families for 6+ years","Doctor-guided care, 24 hours a day","Care at our centre or in your home"]'><span class="type-text">Mysuru's first palliative care centre · Trusted by families for 6+ years</span><span class="type-caret" aria-hidden="true"></span></span>
         <a href="{TEL}">{ico("phone")} {PHONE}</a>
       </div>
     </div>

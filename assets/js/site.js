@@ -5,6 +5,27 @@
   // Icons
   if (window.lucide) lucide.createIcons();
 
+  // Top bar typewriter: types and erases a rotating set of messages
+  var note = document.querySelector(".topbar-note[data-type]");
+  if (note && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var phrases = [];
+    try { phrases = JSON.parse(note.getAttribute("data-type")); } catch (e) {}
+    var out = note.querySelector(".type-text");
+    if (phrases.length && out) {
+      var pi = 0, ci = 0, deleting = false;
+      out.textContent = "";
+      (function tick() {
+        var text = phrases[pi];
+        ci += deleting ? -1 : 1;
+        out.textContent = text.slice(0, ci);
+        var delay = deleting ? 35 : 70;
+        if (!deleting && ci === text.length) { delay = 2200; deleting = true; }
+        else if (deleting && ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; delay = 400; }
+        setTimeout(tick, delay);
+      })();
+    }
+  }
+
   // Mobile navigation drawer
   var toggle = document.querySelector(".nav-toggle");
   if (toggle) {

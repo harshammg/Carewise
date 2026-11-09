@@ -378,11 +378,48 @@ h3 {
   color: var(--accent);
 }
 .topbar-note {
-  display: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.4em;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.01em;
 }
-@media (min-width: 720px) {
+.type-caret {
+  display: inline-block;
+  width: 1.5px;
+  height: 1em;
+  margin-left: 2px;
+  background: var(--accent);
+  animation: caret 1s steps(1) infinite;
+}
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+@media (max-width: 719px) {
+  .topbar {
+    font-size: 0.72rem;
+  }
+  .topbar .wrap {
+    gap: 0.5rem;
+  }
   .topbar-note {
-    display: block;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+    mask-image: linear-gradient(90deg, #000 85%, transparent);
+  }
+  .topbar a {
+    flex-shrink: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .type-caret {
+    display: none;
   }
 }
 
@@ -1893,7 +1930,7 @@ html {
 }
 @media (max-width: 400px) {
   .topbar .wrap {
-    justify-content: center;
+    justify-content: space-between;
   }
   .marquee-track > .card,
   .marquee-track > .quote-card {

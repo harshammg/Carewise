@@ -108,9 +108,9 @@
 
   // Parallax on section images (desktop pointer devices)
   var parallax = [];
-  document.querySelectorAll(".split img, .quote-band img, .pathway img, .page-hero img, .gallery img").forEach(function (img) {
+  document.querySelectorAll(".split img, .quote-band img, .page-hero img, .gallery img").forEach(function (img) {
     var wrap = img.parentElement;
-    if (getComputedStyle(wrap).overflow === "visible" && !img.closest(".pathway")) {
+    if (getComputedStyle(wrap).overflow === "visible") {
       wrap.style.overflow = "hidden";
       wrap.style.borderRadius = getComputedStyle(img).borderRadius;
       wrap.style.boxShadow = getComputedStyle(img).boxShadow;
@@ -197,7 +197,7 @@
   // 3D tilt on cards (pointer devices only)
   var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   if (fine) {
-    document.querySelectorAll(".card, .quote-card, .room, .step, .pathway").forEach(function (el) {
+    document.querySelectorAll(".card, .quote-card, .room, .step").forEach(function (el) {
       if (el.closest(".marquee")) return;
       el.classList.add("tilt");
       el.addEventListener("pointermove", function (e) {

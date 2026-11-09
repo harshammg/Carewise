@@ -243,10 +243,17 @@ html.js .reveal[data-anim="up"]:not(.in) {
 /* images keep their own transform for parallax */
 .split img,
 .quote-band img,
-.pathway img,
 .page-hero img,
 .gallery img {
   transition: translate 0.1s linear;
+}
+.pathway {
+  overflow: hidden;
+  isolation: isolate;
+}
+.pathway img {
+  translate: none;
+  scale: none;
 }
 .page-hero img {
   animation: none;

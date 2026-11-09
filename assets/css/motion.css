@@ -219,6 +219,20 @@
   }
 }
 
+/* Pre-animation offsets must never widen the page (keeps fixed buttons and
+   the header anchored to the real viewport on phones) */
+html,
+body {
+  overflow-x: clip;
+  max-width: 100%;
+}
+main > section,
+.trust,
+.footer,
+.quote-band {
+  overflow-x: clip;
+}
+
 /* Staggered reveals inside grids / lists */
 .reveal {
   transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), filter 0.8s ease;

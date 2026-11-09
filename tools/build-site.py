@@ -387,8 +387,8 @@ def home_page():
         <div class="wrap">
           <div class="hero-copy reveal in">
             <span class="eyebrow">Mysuru's first palliative care centre</span>
-            <h1>Better care for your parents, <span class="serif-italic">wherever they need it.</span></h1>
-            <p class="lead">From specialised care at our centre to professional healthcare at home, Carewise supports your parents through recovery, rehabilitation and every stage where they need extra care.</p>
+            <h1>Helping your parents recover, <span class="serif-italic">one steady step at a time.</span></h1>
+            <p class="lead">Stroke and neurorehabilitation, post-surgical recovery and palliative care, guided by doctors at our Mysuru centre or in your parents' own home.</p>
             <div class="hero-actions">
               <a class="btn btn-primary btn-lg" href="contact.html">{ico("phone-call")} Talk to our team</a>
               <a class="btn btn-ghost-light btn-lg" href="services.html">Explore our care {ico("arrow-right")}</a>

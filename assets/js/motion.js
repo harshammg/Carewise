@@ -111,6 +111,7 @@
   // Parallax on section images (desktop pointer devices)
   var parallax = [];
   document.querySelectorAll(".split img, .quote-band img, .page-hero img, .gallery img").forEach(function (img) {
+    if (img.closest(".slideshow")) return;
     var wrap = img.parentElement;
     if (getComputedStyle(wrap).overflow === "visible") {
       wrap.style.overflow = "hidden";

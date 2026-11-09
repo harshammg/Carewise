@@ -2399,3 +2399,54 @@ html {
   color: var(--teal);
   font-weight: 600;
 }
+
+/* ---- Crossfade slideshow ---- */
+.slideshow {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  background: var(--sand);
+}
+.slideshow img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.06);
+  transition: opacity 1.1s ease, transform 6s linear;
+}
+.slideshow img.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+.slideshow-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.9rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.35rem;
+}
+.slideshow-dots span {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transition: background 0.3s, width 0.3s;
+}
+.slideshow-dots span.is-active {
+  background: var(--accent);
+  width: 1.1rem;
+  border-radius: 999px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .slideshow img {
+    transition: opacity 0.4s;
+    transform: none;
+  }
+}

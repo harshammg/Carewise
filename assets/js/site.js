@@ -68,6 +68,22 @@
     });
   }
 
+  // Crossfade slideshows
+  document.querySelectorAll("[data-slideshow]").forEach(function (box) {
+    var imgs = box.querySelectorAll("img");
+    var dots = box.querySelectorAll(".slideshow-dots span");
+    if (imgs.length < 2) return;
+    var i = 0, every = parseInt(box.getAttribute("data-interval"), 10) || 4000;
+    setInterval(function () {
+      if (document.hidden) return;
+      imgs[i].classList.remove("is-active");
+      if (dots[i]) dots[i].classList.remove("is-active");
+      i = (i + 1) % imgs.length;
+      imgs[i].classList.add("is-active");
+      if (dots[i]) dots[i].classList.add("is-active");
+    }, every);
+  });
+
   // Collapsible grids: show the first N cards, toggle the rest with View more
   document.querySelectorAll(".grid[data-collapsible]").forEach(function (grid) {
     var n = parseInt(grid.getAttribute("data-collapsible"), 10) || 3;

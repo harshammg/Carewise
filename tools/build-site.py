@@ -294,12 +294,21 @@ def page_hero(eyebrow, title, lead, image=None):
       </section>'''
 
 
-def split(image, eyebrow, title, paras, bullets=None, flip=False, cta_link=None):
+def slideshow(slides, interval=4000):
+    """Crossfading image stack; slides = [(src, alt), ...]. First slide loads eagerly."""
+    imgs = "".join(f'<img src="{src}" alt="{alt}" loading="{"eager" if i == 0 else "lazy"}"{" class=\"is-active\"" if i == 0 else ""} />'
+                   for i, (src, alt) in enumerate(slides))
+    dots = "".join(f'<span{" class=\"is-active\"" if i == 0 else ""}></span>' for i in range(len(slides)))
+    return f'<div class="slideshow" data-slideshow data-interval="{interval}">{imgs}<div class="slideshow-dots" aria-hidden="true">{dots}</div></div>'
+
+
+def split(image, eyebrow, title, paras, bullets=None, flip=False, cta_link=None, slides=None):
     b = check_list(bullets) if bullets else ""
     link = f'<p style="margin-top:1.75rem"><a class="text-link" href="{cta_link[0]}">{cta_link[1]} {ico("arrow-right")}</a></p>' if cta_link else ""
+    media = slideshow(slides) if slides else img(image)
     return f'''
           <div class="split{" split--flip" if flip else ""}">
-            <div class="reveal">{img(image)}</div>
+            <div class="reveal">{media}</div>
             <div class="reveal">
               <span class="eyebrow">{eyebrow}</span>
               <h2>{title}</h2>
@@ -462,7 +471,8 @@ def home_page():
                                 ["Carewise Centre in Mysuru is built for the weeks and months after a stroke, a brain or spinal injury or major surgery: round-the-clock nursing, daily doctor rounds, in-house physiotherapy and private rooms where family can stay.",
                                  "The same team provides palliative and long-term medical care, so your parents never have to move when their needs change."],
                                 ["Neurorehabilitation led by doctors and senior physiotherapists", "24/7 nursing with ventilator, BiPAP and CPAP support", "Private rooms with an attendant bed, or a general ward", "Transparent daily updates to the family, wherever you live"],
-                                cta_link=("centre.html", "Explore the Centre")))
+                                cta_link=("centre.html", "Explore the Centre"),
+                                slides=[(f"assets/img/facility/{f}", a) for f, a in FACILITY[:10]]))
 
     neuro_items = [
         ("brain", "Stroke recovery", "Early mobilisation, gait training and arm and hand retraining to regain independence after a stroke."),

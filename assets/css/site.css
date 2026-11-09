@@ -1048,7 +1048,7 @@ body.nav-open {
 .marquee-track {
   display: flex;
   align-items: stretch;
-  gap: 1.25rem;
+  gap: 1rem;
   width: max-content;
   animation: marquee 55s linear infinite;
 }
@@ -1094,7 +1094,7 @@ body.nav-open {
     transform: translateX(0);
   }
   to {
-    transform: translateX(calc(-50% - 0.625rem));
+    transform: translateX(calc(-50% - 0.5rem));
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1239,6 +1239,7 @@ body.nav-open {
 
 /* ---- Testimonials ---- */
 .quote-card {
+  margin: 0;
   background: var(--white);
   border: 1px solid var(--line);
   border-radius: var(--r-lg);

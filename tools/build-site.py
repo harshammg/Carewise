@@ -19,8 +19,8 @@ YEAR = "2026"
 
 IMG = {
     "hero": ("assets/img/hero-family-nurse.png", "Elderly father smiling with his daughter and a Carewise nurse"),
-    "room": ("assets/img/centre-private-room.png", "Private room at Carewise Centre"),
-    "room2": ("assets/img/centre-private-room-2.png", "Private room with attendant bed at Carewise Centre"),
+    "room": ("assets/img/facility/facility-02.jpg", "Private room at Carewise Centre, Mysuru"),
+    "room2": ("assets/img/facility/facility-09.jpg", "Rehabilitation ward at Carewise Centre"),
     "home": ("assets/img/home-care-nurse-visit.png", "Nurse visiting an elderly man at home"),
     "family": ("assets/img/elderly-couple-family.png", "Elderly couple with their adult children"),
 }

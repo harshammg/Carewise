@@ -2233,3 +2233,38 @@ html {
     transform: none;
   }
 }
+
+/* ---- Neurorehab mid heading + home-care mention ---- */
+.section-head--mid {
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+}
+.home-note {
+  padding-block: clamp(2rem, 4vw, 3rem);
+}
+.home-note-card {
+  display: grid;
+  gap: 1.25rem;
+  align-items: center;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 1.5rem;
+}
+.home-note-card .ico-ring {
+  margin: 0;
+}
+.home-note-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.3rem;
+}
+.home-note-card p {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+@media (min-width: 900px) {
+  .home-note-card {
+    grid-template-columns: auto 1fr auto;
+    gap: 1.5rem;
+    padding: 1.5rem 2rem;
+  }
+}

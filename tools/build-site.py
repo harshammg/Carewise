@@ -236,8 +236,8 @@ def faq(items):
 
 
 def stats(dark=False):
-    data = [("6+", "Years caring for Mysuru families"), ("1st", "Palliative care centre in Mysuru"),
-            ("24/7", "Doctor-guided supervision"), ("100%", "Background-verified staff")]
+    data = [("1000+", "Patients impacted so far"), ("6+", "Years caring for Mysuru families"),
+            ("1st", "Palliative care centre in Mysuru"), ("24/7", "Doctor-guided supervision at the Centre")]
     inner = '<div class="stats">' + "".join(f'<div class="stat reveal"><b>{n}</b><span>{l}</span></div>' for n, l in data) + "</div>"
     return section(inner, "bg-ink" if dark else "")
 
@@ -389,57 +389,53 @@ def home_page():
         </div>
         <div class="wrap">
           <div class="hero-copy reveal in">
-            <span class="eyebrow">Mysuru's first palliative care centre</span>
-            <h1>Helping your parents recover, <span class="serif-italic">one steady step at a time.</span></h1>
-            <p class="lead">Stroke and neurorehabilitation, post-surgical recovery and palliative care, guided by doctors at our Mysuru centre or in your parents' own home.</p>
+            <span class="eyebrow">Carewise Centre · Mysuru's first palliative &amp; neurorehabilitation centre</span>
+            <h1>Specialist neuro rehabilitation, <span class="serif-italic">one steady step at a time.</span></h1>
+            <p class="lead">At Carewise Centre, doctors, physiotherapists and 24/7 nurses help your parents recover from stroke, brain and spinal injury and major surgery, with palliative care when comfort matters most. Home visits are available too.</p>
             <div class="hero-actions">
-              <a class="btn btn-primary btn-lg" href="contact.html">{ico("phone-call")} Talk to our team</a>
-              <a class="btn btn-ghost-light btn-lg" href="services.html">Explore our care {ico("arrow-right")}</a>
+              <a class="btn btn-primary btn-lg" href="centre.html">{ico("building-2")} Explore the Centre</a>
+              <a class="btn btn-ghost-light btn-lg" href="contact.html">{ico("phone-call")} Talk to our team</a>
             </div>
             <div class="hero-proof">
               <div class="avatars"><span>RM</span><span>PS</span><span>AK</span></div>
-              <span>Trusted by families in Mysuru, Bengaluru and abroad for over six years.</span>
+              <span>1000+ patients cared for by families in Mysuru, Bengaluru and abroad over six years.</span>
             </div>
           </div>
           <div class="hero-badge reveal in">
-            <span class="ico">{ico("shield-check")}</span>
-            <div><strong>Doctor-guided, 24/7</strong><small>Verified staff · Daily family updates</small></div>
+            <span class="ico">{ico("heart-pulse")}</span>
+            <div><strong>1000+ patients impacted</strong><small>Doctor-guided · 24/7 nursing at the Centre</small></div>
           </div>
         </div>
       </section>
       <div class="trust">
         <div class="wrap">
-          <div class="trust-item">{ico("stethoscope")} Doctor-guided protocols</div>
-          <div class="trust-item">{ico("badge-check")} Verified &amp; trained staff</div>
-          <div class="trust-item">{ico("message-square-heart")} Transparent daily updates</div>
-          <div class="trust-item">{ico("home")} Centre or home, your choice</div>
+          <div class="trust-item">{ico("heart-pulse")} 1000+ patients impacted</div>
+          <div class="trust-item">{ico("brain")} Dedicated neurorehabilitation</div>
+          <div class="trust-item">{ico("stethoscope")} Doctor-guided, 24/7 nursing</div>
+          <div class="trust-item">{ico("message-square-heart")} Daily updates to the family</div>
         </div>
       </div>'''
 
-    pathways = section(section_head("Two pathways", "Care where it suits your family best",
-                                    "Choose the environment that fits your parent's condition today. Moving between the two is always possible.") + f'''
-          <div class="grid grid-2">
-            <article class="pathway reveal">
-              {img("room")}
-              <div class="pathway-body">
-                <span class="tag">At the centre</span>
-                <h3>Care at Carewise Centre</h3>
-                <p>A specialised facility with 24/7 medical supervision, private rooms and a calm, healing environment.</p>
-                <ul>{"".join(f"<li>{ico('check')}<span>{b}</span></li>" for b in ["Palliative and long-term medical care", "Rehabilitation after stroke or surgery", "Ventilator and respiratory support"])}</ul>
-                <a class="btn btn-dark" href="centre.html">Explore the centre {ico("arrow-right")}</a>
-              </div>
-            </article>
-            <article class="pathway reveal">
-              {img("home")}
-              <div class="pathway-body">
-                <span class="tag">At home</span>
-                <h3>Care at Home</h3>
-                <p>Nurses, doctors, physiotherapists and caretakers who come to you, on a schedule that fits.</p>
-                <ul>{"".join(f"<li>{ico('check')}<span>{b}</span></li>" for b in ["Single visits to round-the-clock care", "Doctor visits, nursing and physiotherapy", "Lab tests and remote monitoring"])}</ul>
-                <a class="btn btn-dark" href="home-care.html">Explore home care {ico("arrow-right")}</a>
-              </div>
-            </article>
-          </div>''')
+    centre_spot = section(split("room", "Inside Carewise Centre", "A dedicated centre for recovery, rehabilitation and comfort",
+                                ["Carewise Centre in Mysuru is built for the weeks and months after a stroke, a brain or spinal injury or major surgery: round-the-clock nursing, daily doctor rounds, in-house physiotherapy and private rooms where family can stay.",
+                                 "The same team provides palliative and long-term medical care, so your parents never have to move when their needs change."],
+                                ["Neurorehabilitation led by doctors and senior physiotherapists", "24/7 nursing with ventilator, BiPAP and CPAP support", "Private rooms with an attendant bed, or a general ward", "Transparent daily updates to the family, wherever you live"],
+                                cta_link=("centre.html", "Explore the Centre")))
+
+    neuro = section(section_head("Neurorehabilitation", "Getting back what illness took away",
+                                 "Structured, goal-based rehabilitation programmes at the Centre for the conditions families bring to us most often.") + icon_cards([
+        ("brain", "Stroke recovery", "Early mobilisation, gait training and arm and hand retraining to regain independence after a stroke."),
+        ("activity", "Brain &amp; spinal cord injury", "Strength, balance, bladder and skin care, and adaptive training for life after injury."),
+        ("footprints", "Parkinson's &amp; movement disorders", "Programmes that improve walking, balance and daily tasks and slow decline."),
+        ("message-circle", "Speech &amp; swallowing therapy", "Speech-language therapy for aphasia, dysarthria and safe swallowing after stroke."),
+        ("puzzle", "Cognitive rehabilitation", "Memory, attention and problem-solving work for stroke, injury and early dementia."),
+        ("stethoscope", "Post-surgical neuro recovery", "Supervised recovery after brain or spine surgery, with pain and wound management."),
+    ], "grid-3") + section_head("How recovery works", "Your parent's path at the Centre", center=True).replace('section-head', 'section-head section-head--mid', 1) + steps([
+        ("Assessment", "Our doctor and physiotherapist assess mobility, speech, swallowing and daily needs and set clear goals."),
+        ("Daily programme", "Therapy sessions every day, nursing care around the clock and nutrition planned for recovery."),
+        ("Weekly review", "Goals are measured and adjusted each week, and the family is walked through progress."),
+        ("Home transition", "Discharge planning, home exercises and, if needed, home visits from the same team."),
+    ]), "bg-sand", "neurorehab")
 
     quote = f'''
       <section class="section quote-band bg-teal">
@@ -452,31 +448,37 @@ def home_page():
         </div>
       </section>'''
 
-    conditions = section(section_head("Conditions we treat", "Comprehensive support for chronic and acute conditions") + icon_cards(CONDITIONS, cols="grid-4", show=4)
+    conditions = section(section_head("Conditions we treat at the Centre", "Comprehensive support for chronic and acute conditions") + icon_cards(CONDITIONS, cols="grid-4", show=4)
                          + f'<p class="center" style="margin-top:1.5rem"><a class="text-link" href="services.html">See all services {ico("arrow-right")}</a></p>', "bg-sand")
 
-    cards = "".join(f'''
-            <article class="card"><span class="ico-ring">{ico(i)}</span><h3>{t}</h3><p>{d}</p></article>''' for i, t, d in HOME_SERVICES)
     instagram = instagram_section()
 
-    home_row = section(section_head("Inside home healthcare", "Personalised senior care at your doorstep", center=False) + f'''
-          <div class="marquee reveal" aria-label="Home healthcare services">
-            <div class="marquee-track">{cards}{cards}</div>
+    home_row = f'''
+      <section class="section--tight home-note">
+        <div class="wrap">
+          <div class="home-note-card reveal">
+            <span class="ico-ring">{ico("home")}</span>
+            <div>
+              <h3>Also available: care at home</h3>
+              <p>When the Centre is not needed, our nurses, physiotherapists and doctors can visit your parents at home in Mysuru for follow-up therapy, nursing and check-ups.</p>
+            </div>
+            <a class="btn btn-outline" href="home-care.html">Home healthcare {ico("arrow-right")}</a>
           </div>
-          <p style="margin-top:2rem"><a class="text-link" href="home-care.html">All home healthcare services {ico("arrow-right")}</a></p>''')
+        </div>
+      </section>'''
 
     rooms = section(section_head("Your comfort is our priority", "Rooms designed for healing and peace") + ROOMS, "bg-sand")
 
     stories = section(section_head("Stories", "Heartfelt stories from our families") + testimonials())
 
     questions = section(section_head("Questions", "What families usually ask us") + faq([
-        ("How do I know which option is right for my parent?", "Call us and describe the situation. A doctor or senior nurse assesses your parent, at home or at the centre, and recommends the right pathway. You can always move between the two."),
+        ("Who is the Centre right for?", "Anyone recovering from a stroke, brain or spinal injury or major surgery, and anyone who needs palliative or long-term medical care with 24/7 nursing. Our doctor assesses your parent and sets a plan on day one."),
         ("Can I get updates if I live in another city or abroad?", "Yes. Every family receives daily updates from the care team, and you can reach your coordinator at any time."),
         ("Are your staff verified?", "Every nurse, caretaker and therapist is identity and background verified and trained in elderly and palliative care before joining."),
         ("How quickly can care start?", "Home care usually begins within 24 to 48 hours of assessment. Admission to the centre can often be arranged the same day."),
     ]), "bg-sand")
 
-    return hero + pathways + quote + conditions + instagram + home_row + rooms + stats(dark=True) + stories + questions + cta()
+    return hero + centre_spot + neuro + quote + conditions + rooms + stats(dark=True) + instagram + home_row + stories + questions + cta("Ready to visit Carewise Centre?", "Book a walk-through with our care coordinator, or call to discuss your parent's recovery.")
 
 
 def about_page():
@@ -681,7 +683,7 @@ def terms_page():
 
 
 PAGES = {
-    "index": ("Carewise | Palliative &amp; Senior Healthcare Centre, Mysuru", "Mysuru's first palliative care centre and professional home healthcare. Trusted for 6+ years by families in Mysuru, Bengaluru and abroad.", home_page),
+    "index": ("Carewise Centre | Neurorehabilitation &amp; Palliative Care, Mysuru", "Carewise Centre, Mysuru's first palliative and neurorehabilitation centre: stroke recovery, 24/7 nursing and doctor-guided care. 1000+ patients impacted.", home_page),
     "about": ("About Us | Carewise", "Learn about Carewise, Mysuru's first palliative care centre and home healthcare service trusted by families for 6+ years.", about_page),
     "centre": ("Carewise Centre | 24/7 Palliative &amp; Senior Care in Mysuru", "Private and general rooms with 24/7 medical supervision, palliative care, rehabilitation and long-term care at the Carewise Centre, Mysuru.", centre_page),
     "home-care": ("Home Healthcare in Mysuru | Carewise", "Doctor visits, nursing, physiotherapy, caretakers and lab tests at home for elderly parents in Mysuru.", home_care_page),

@@ -453,15 +453,23 @@ def home_page():
                                 ["Neurorehabilitation led by doctors and senior physiotherapists", "24/7 nursing with ventilator, BiPAP and CPAP support", "Private rooms with an attendant bed, or a general ward", "Transparent daily updates to the family, wherever you live"],
                                 cta_link=("centre.html", "Explore the Centre")))
 
-    neuro = section(section_head("Neurorehabilitation", "Getting back what illness took away",
-                                 "Structured, goal-based rehabilitation programmes at the Centre for the conditions families bring to us most often.") + icon_cards([
+    neuro_items = [
         ("brain", "Stroke recovery", "Early mobilisation, gait training and arm and hand retraining to regain independence after a stroke."),
         ("activity", "Brain &amp; spinal cord injury", "Strength, balance, bladder and skin care, and adaptive training for life after injury."),
         ("footprints", "Parkinson's &amp; movement disorders", "Programmes that improve walking, balance and daily tasks and slow decline."),
         ("message-circle", "Speech &amp; swallowing therapy", "Speech-language therapy for aphasia, dysarthria and safe swallowing after stroke."),
         ("puzzle", "Cognitive rehabilitation", "Memory, attention and problem-solving work for stroke, injury and early dementia."),
         ("stethoscope", "Post-surgical neuro recovery", "Supervised recovery after brain or spine surgery, with pain and wound management."),
-    ], "grid-3") + section_head("How recovery works", "Your parent's path at the Centre", center=True).replace('section-head', 'section-head section-head--mid', 1) + steps([
+        ("accessibility", "Mobility &amp; fall prevention", "Balance work, walking aids and home-safety training to keep your parents steady on their feet."),
+        ("heart-pulse", "Cardiac &amp; pulmonary rehab", "Graded exercise and breathing therapy after heart events or long ventilator support."),
+    ]
+    neuro_cards = "".join(f'''
+            <article class="card"><span class="ico-ring">{ico(i)}</span><h3>{t}</h3><p>{d}</p></article>''' for i, t, d in neuro_items)
+    neuro = section(section_head("Neurorehabilitation", "Getting back what illness took away",
+                                 "Structured, goal-based rehabilitation programmes at the Centre for the conditions families bring to us most often.") + f'''
+          <div class="marquee reveal" aria-label="Neurorehabilitation programmes">
+            <div class="marquee-track">{neuro_cards}{neuro_cards}</div>
+          </div>''' + section_head("How recovery works", "Your parent's path at the Centre", center=True).replace('section-head', 'section-head section-head--mid', 1) + steps([
         ("Assessment", "Our doctor and physiotherapist assess mobility, speech, swallowing and daily needs and set clear goals."),
         ("Daily programme", "Therapy sessions every day, nursing care around the clock and nutrition planned for recovery."),
         ("Weekly review", "Goals are measured and adjusted each week, and the family is walked through progress."),

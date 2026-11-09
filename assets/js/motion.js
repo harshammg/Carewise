@@ -158,7 +158,11 @@
       var h = document.documentElement;
       var max = h.scrollHeight - h.clientHeight;
       bar.style.transform = "scaleX(" + (max > 0 ? h.scrollTop / max : 0) + ")";
-      body.classList.toggle("scrolled", h.scrollTop > 40);
+      // Hysteresis: engage the pill after 64px, release only above the very top,
+      // so the header never flickers while hovering around one threshold.
+      var y = h.scrollTop;
+      if (y > 64 && !body.classList.contains("scrolled")) body.classList.add("scrolled");
+      else if (y < 12 && body.classList.contains("scrolled")) body.classList.remove("scrolled");
       runParallax();
       revealVisible();
       ticking = false;

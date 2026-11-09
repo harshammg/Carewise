@@ -73,8 +73,33 @@
     }
   });
 
-  // Instagram strip arrows
+  // Instagram strip: load the live feed from /api/instagram (Vercel function).
+  // If the function is missing or has no token, the embedded posts stay as fallback.
   var igRow = document.querySelector("[data-ig]");
+  if (igRow && window.fetch) {
+    fetch("/api/instagram?limit=12", { headers: { Accept: "application/json" } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        if (!data || !data.items || !data.items.length) return;
+        var html = data.items.map(function (m) {
+          var cap = (m.caption || "").replace(/[<>&"]/g, function (c) {
+            return { "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c];
+          });
+          var isVideo = m.type === "VIDEO";
+          return (
+            '<li class="ig-card ig-card--live">' +
+            '<a href="' + m.url + '" target="_blank" rel="noopener" aria-label="Open Instagram post">' +
+            '<img src="' + m.image + '" alt="' + (cap || "Instagram post") + '" loading="lazy" />' +
+            (isVideo ? '<span class="ig-badge">' + '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>' : "") +
+            '<span class="ig-cap">' + cap + "</span>" +
+            "</a></li>"
+          );
+        }).join("");
+        igRow.innerHTML = html;
+        igRow.classList.add("ig-row--live");
+      })
+      .catch(function () {});
+  }
   if (igRow) {
     document.querySelectorAll(".ig-arrow").forEach(function (b) {
       b.addEventListener("click", function () {

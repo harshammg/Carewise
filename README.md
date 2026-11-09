@@ -23,3 +23,19 @@ Then open http://localhost:8080/.
 ## Deploying on Vercel
 
 Import the repository in Vercel with framework preset **Other** and no build command. `vercel.json` enables clean URLs, so `/about.html` is served at `/about`, and sets long cache headers for `assets/`.
+
+## Live Instagram feed
+
+The home page strip under "Conditions we treat" loads posts from `/api/instagram`, a Vercel serverless function in `api/instagram.js`. Without a token it returns 503 and the page quietly falls back to the embedded posts listed in `INSTAGRAM_POSTS` in `tools/build-site.py`.
+
+To enable the live feed:
+
+1. Make sure the @care_wise_ account is a **Professional** account (Business or Creator) in the Instagram app.
+2. At https://developers.facebook.com create an app, choose **Other → Business**, then add the product **Instagram → API setup with Instagram login**.
+3. Under that product, add @care_wise_ as an Instagram tester and accept the invite from the account (Instagram app → Settings → Website permissions → Apps and websites → Tester invites).
+4. Click **Generate token** next to the account, log in and copy the long-lived access token (valid 60 days).
+5. In Vercel, Project → Settings → Environment Variables, add `INSTAGRAM_ACCESS_TOKEN` with that value, then redeploy.
+
+`vercel.json` schedules `/api/instagram-refresh` every Monday, which extends the token's validity. If Meta ever returns a different token string, the function logs a warning and you paste the new value into Vercel. Responses are cached for an hour at the edge.
+
+Local preview with `python -m http.server` has no `/api`, so you will always see the embed fallback locally; `vercel dev` runs the function.

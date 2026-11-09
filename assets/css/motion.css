@@ -277,7 +277,7 @@ html.js .reveal[data-anim="up"]:not(.in) {
   transform: translateY(48px);
 }
 /* images keep their own transform for parallax */
-.split img,
+.split > div > img,
 .quote-band img,
 .page-hero img,
 .gallery img {

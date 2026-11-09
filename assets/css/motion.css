@@ -1,0 +1,480 @@
+/* =========================================================
+   Carewise — motion layer (loaded after site.css)
+   ========================================================= */
+
+/* Page load curtain */
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--teal);
+  transform-origin: top;
+  animation: curtain 1.1s cubic-bezier(0.76, 0, 0.24, 1) 0.1s forwards;
+  pointer-events: none;
+}
+.curtain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: top;
+  animation: curtain 1.1s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+@keyframes curtain {
+  to {
+    transform: scaleY(0);
+  }
+}
+
+/* Scroll progress */
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  z-index: 190;
+  transform-origin: left;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, var(--teal), var(--accent), var(--teal));
+  background-size: 200% 100%;
+  animation: shimmer 4s linear infinite;
+}
+@keyframes shimmer {
+  to {
+    background-position: 200% 0;
+  }
+}
+
+/* Morphing blobs */
+.blob {
+  position: absolute;
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  filter: blur(40px);
+  opacity: 0.55;
+  pointer-events: none;
+  animation: morph 18s ease-in-out infinite alternate, drift 26s ease-in-out infinite alternate;
+  z-index: 0;
+}
+.blob--terracotta {
+  background: var(--accent-soft);
+}
+.blob--teal {
+  background: var(--teal-soft);
+  animation-delay: -6s, -9s;
+}
+.blob--sand {
+  background: var(--sand-deep);
+  animation-delay: -12s, -4s;
+}
+@keyframes morph {
+  0% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+  50% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+  100% {
+    border-radius: 50% 50% 40% 60% / 40% 60% 60% 40%;
+  }
+}
+@keyframes drift {
+  from {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  to {
+    transform: translate(6vw, -4vw) rotate(25deg) scale(1.15);
+  }
+}
+.hero,
+.page-hero,
+.cta {
+  isolation: isolate;
+}
+.hero .wrap,
+.page-hero .wrap,
+.cta > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero text: word reveal */
+.words .w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+.words .w > span {
+  display: inline-block;
+  transform: translateY(110%) rotate(4deg);
+  opacity: 0;
+  transform-origin: left bottom;
+  animation: wordUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(0.9s + var(--i) * 70ms);
+}
+@keyframes wordUp {
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.serif-italic,
+.words .serif-italic .w > span {
+  background: linear-gradient(90deg, var(--teal), #2f6ea8, var(--teal), #4b86c0, var(--teal));
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+.words .serif-italic {
+  background: none;
+  color: var(--terracotta);
+  -webkit-text-fill-color: var(--terracotta);
+  animation: none;
+}
+.words .serif-italic .w > span {
+  animation: wordUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards, shimmer 6s linear infinite;
+  animation-delay: calc(0.9s + var(--i) * 70ms), 0s;
+}
+
+/* Hero media float + badge bob + ring */
+.hero-media > img,
+.page-hero img {
+  animation: floaty 7s ease-in-out infinite;
+}
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  50% {
+    transform: translateY(-12px) rotate(-0.6deg);
+  }
+}
+.hero-badge {
+  animation: bob 5s ease-in-out infinite 1s;
+}
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+.hero-badge .ico {
+  position: relative;
+}
+.hero-badge .ico::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--teal);
+  animation: ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+.hero-media::before {
+  content: "";
+  position: absolute;
+  inset: -6% -4%;
+  border: 1.5px dashed rgba(12, 56, 95, 0.3);
+  border-radius: 50%;
+  animation: spin 40s linear infinite;
+  pointer-events: none;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Avatars pop */
+.avatars span {
+  animation: pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+.avatars span:nth-child(1) {
+  animation-delay: 1.8s;
+}
+.avatars span:nth-child(2) {
+  animation-delay: 1.95s;
+}
+.avatars span:nth-child(3) {
+  animation-delay: 2.1s;
+}
+@keyframes pop {
+  from {
+    transform: scale(0);
+  }
+}
+
+/* Staggered reveals inside grids / lists */
+.reveal {
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), filter 0.8s ease;
+  transition-delay: calc(var(--d, 0) * 90ms);
+}
+html.js .reveal:not(.in) {
+  transform: translateY(36px) scale(0.98);
+  filter: blur(4px);
+}
+html.js .reveal[data-anim="left"]:not(.in) {
+  transform: translateX(-56px) rotate(-1deg);
+}
+html.js .reveal[data-anim="right"]:not(.in) {
+  transform: translateX(56px) rotate(1deg);
+}
+html.js .reveal[data-anim="zoom"]:not(.in) {
+  transform: scale(0.86);
+}
+html.js .reveal[data-anim="up"]:not(.in) {
+  transform: translateY(48px);
+}
+/* images keep their own transform for parallax */
+.split img,
+.quote-band img,
+.pathway img,
+.page-hero img,
+.gallery img {
+  transition: translate 0.1s linear;
+}
+.page-hero img {
+  animation: none;
+}
+
+/* Section heading underline sweep */
+.section-head .eyebrow {
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+}
+.section-head.center .eyebrow {
+  margin-inline: auto;
+}
+.section-head h2 {
+  position: relative;
+  display: inline-block;
+}
+.section-head h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.15em;
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--terracotta), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+}
+.section-head.center h2::after {
+  background: linear-gradient(90deg, transparent, var(--terracotta), transparent);
+  transform-origin: center;
+}
+.section-head.in h2::after {
+  transform: scaleX(1);
+}
+
+/* 3D tilt cards */
+.card,
+.quote-card,
+.room,
+.pathway,
+.step {
+  position: relative;
+}
+.tilt {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
+}
+.tilt .ico-ring,
+.tilt h3 {
+  transform: translateZ(28px);
+}
+.tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.55), transparent 40%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.tilt:hover::after {
+  opacity: 1;
+}
+.card:hover .ico-ring {
+  animation: wiggle 0.6s ease;
+}
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: translateZ(28px) rotate(0);
+  }
+  25% {
+    transform: translateZ(28px) rotate(-10deg) scale(1.1);
+  }
+  75% {
+    transform: translateZ(28px) rotate(10deg) scale(1.1);
+  }
+}
+
+/* Magnetic buttons + ripple + sheen */
+.btn {
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+}
+.btn .ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  transform: scale(0);
+  animation: ripple 0.7s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.6) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+  pointer-events: none;
+}
+.btn-primary:hover::before {
+  transform: translateX(120%);
+}
+.sticky-bar .btn span {
+  overflow: visible;
+}
+
+/* Header shrinks when scrolled */
+.header .wrap {
+  transition: height 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+}
+body.scrolled .header .wrap {
+  height: 3.75rem;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 10px 30px -14px rgba(29, 39, 39, 0.35);
+}
+
+/* Stats count-up glow */
+.stat b {
+  transition: text-shadow 0.4s;
+}
+.stat.counted b {
+  text-shadow: 0 0 24px rgba(191, 239, 122, 0.6);
+}
+
+/* Cursor spotlight (desktop only) */
+.spot {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(360px circle at var(--x, -100px) var(--y, -100px), rgba(12, 56, 95, 0.07), transparent 60%);
+  mix-blend-mode: multiply;
+}
+@media (hover: none), (max-width: 1023px) {
+  .spot {
+    display: none;
+  }
+}
+
+/* Floating buttons entrance + pulse */
+.sticky-bar .btn {
+  animation: pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 2.2s backwards;
+}
+.sticky-bar .btn-wa {
+  animation: pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 2.4s backwards;
+}
+.sticky-bar .btn-wa::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--success);
+  animation: ping 2.6s cubic-bezier(0, 0, 0.2, 1) infinite 3s;
+}
+
+/* Marquee cards lift */
+.marquee-track > .card:hover,
+.marquee-track > .quote-card:hover {
+  transform: translateY(-6px) rotate(-0.8deg);
+}
+
+/* Quote band glow */
+.quote-band blockquote em {
+  animation: glowPulse 3.5s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0%,
+  100% {
+    text-shadow: 0 0 10px rgba(191, 239, 122, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 36px rgba(191, 239, 122, 0.8);
+  }
+}
+
+/* Reduced motion: switch everything off */
+@media (prefers-reduced-motion: reduce) {
+  .curtain,
+  .progress,
+  .blob,
+  .spot,
+  .hero-media::before,
+  .hero-badge .ico::after,
+  .sticky-bar .btn-wa::after,
+  .btn-primary::before,
+  .tilt::after,
+  .section-head h2::after {
+    display: none !important;
+  }
+  .words .w > span,
+  .avatars span,
+  .hero-media > img,
+  .page-hero img,
+  .hero-badge,
+  .serif-italic,
+  .sticky-bar .btn,
+  .quote-band blockquote em,
+  .card:hover .ico-ring,
+  .progress {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .serif-italic {
+    color: var(--terracotta);
+    background: none;
+    -webkit-text-fill-color: var(--terracotta);
+  }
+  html.js .reveal:not(.in) {
+    filter: none;
+    transform: none;
+    opacity: 1;
+  }
+  .tilt {
+    transform: none !important;
+  }
+}

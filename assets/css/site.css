@@ -1874,8 +1874,8 @@ html {
   margin: 0;
 }
 @media (max-width: 1023px) {
-  body {
-    padding-bottom: 6.5rem;
+  .footer {
+    padding-bottom: 7rem;
   }
   .sticky-bar {
     right: 1rem;

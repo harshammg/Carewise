@@ -349,27 +349,28 @@ ROOMS = f'''
 
 def home_page():
     hero = f'''
-      <section class="hero">
+      <section class="hero hero--bg">
+        <div class="hero-bg">
+          {img("hero", loading="eager")}
+          <div class="hero-shade"></div>
+        </div>
         <div class="wrap">
-          <div class="reveal in">
+          <div class="hero-copy reveal in">
             <span class="eyebrow">Mysuru's first palliative care centre</span>
             <h1>Better care for your parents, <span class="serif-italic">wherever they need it.</span></h1>
             <p class="lead">From specialised care at our centre to professional healthcare at home, Carewise supports your parents through recovery, rehabilitation and every stage where they need extra care.</p>
             <div class="hero-actions">
               <a class="btn btn-primary btn-lg" href="contact.html">{ico("phone-call")} Talk to our team</a>
-              <a class="btn btn-outline btn-lg" href="services.html">Explore our care {ico("arrow-right")}</a>
+              <a class="btn btn-ghost-light btn-lg" href="services.html">Explore our care {ico("arrow-right")}</a>
             </div>
             <div class="hero-proof">
               <div class="avatars"><span>RM</span><span>PS</span><span>AK</span></div>
               <span>Trusted by families in Mysuru, Bengaluru and abroad for over six years.</span>
             </div>
           </div>
-          <div class="hero-media reveal in">
-            {img("hero", loading="eager")}
-            <div class="hero-badge">
-              <span class="ico">{ico("shield-check")}</span>
-              <div><strong>Doctor-guided, 24/7</strong><small>Verified staff · Daily family updates</small></div>
-            </div>
+          <div class="hero-badge reveal in">
+            <span class="ico">{ico("shield-check")}</span>
+            <div><strong>Doctor-guided, 24/7</strong><small>Verified staff · Daily family updates</small></div>
           </div>
         </div>
       </section>

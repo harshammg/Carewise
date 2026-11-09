@@ -10,9 +10,11 @@
   var curtain = document.createElement("div");
   curtain.className = "curtain";
   body.appendChild(curtain);
-  curtain.addEventListener("animationend", function () {
-    curtain.remove();
-  });
+  function dropCurtain() {
+    if (curtain.parentNode) curtain.remove();
+  }
+  curtain.addEventListener("animationend", dropCurtain);
+  setTimeout(dropCurtain, 1600); // background tabs pause animations; never leave the page covered
 
   var bar = document.createElement("div");
   bar.className = "progress";

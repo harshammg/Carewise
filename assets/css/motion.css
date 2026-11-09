@@ -136,6 +136,28 @@
   -webkit-text-fill-color: var(--terracotta);
   animation: none;
 }
+.hero--bg .words .serif-italic .w > span {
+  background-image: linear-gradient(90deg, var(--accent), #e4f7c4, var(--accent), #d2f29f, var(--accent));
+}
+.hero--bg .words .serif-italic {
+  background: none;
+  color: var(--accent);
+  -webkit-text-fill-color: var(--accent);
+}
+.hero--bg .blob {
+  display: none;
+}
+.hero-bg img {
+  animation: kenburns 18s ease-in-out infinite alternate;
+}
+@keyframes kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08) translate(-1.5%, -1%);
+  }
+}
 .words .serif-italic .w > span {
   animation: wordUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards, shimmer 6s linear infinite;
   animation-delay: calc(0.9s + var(--i) * 70ms), 0s;
@@ -474,6 +496,7 @@ body.scrolled .header .wrap {
   .words .w > span,
   .avatars span,
   .hero-media > img,
+  .hero-bg img,
   .page-hero img,
   .hero-badge,
   .serif-italic,

@@ -246,6 +246,11 @@ TESTIMONIALS = [
     ("RM", "Son · Bengaluru", "Carewise gave my father the dignity and medical care he needed when we couldn't manage at home. The staff treated him like family."),
     ("PS", "Daughter · London", "Living abroad, I was constantly worried about my mother's post-stroke recovery. The daily updates kept me connected and at peace."),
     ("AK", "Son · Mysuru", "The palliative care team didn't just manage the pain. They brought a sense of calm to our entire family during a difficult time."),
+    ("SN", "Daughter · Mysuru", "After Amma's hip surgery the physiotherapists came home every day. Within six weeks she was walking to the temple again."),
+    ("VR", "Son · Dubai", "I could speak to the doctor on a video call every week. For a family living abroad, that kind of access means everything."),
+    ("LK", "Wife · Mysuru", "My husband was on BiPAP support for months. The nurses were patient, skilled and always explained what they were doing."),
+    ("DG", "Daughter · Bengaluru", "The private room felt like home, not a hospital. Appa had his own routine, his favourite food and people who knew his name."),
+    ("MH", "Grandson · Chennai", "Dementia care is hard to find done well. Carewise kept my grandmother safe and calm, and kept us informed every single day."),
 ]
 
 

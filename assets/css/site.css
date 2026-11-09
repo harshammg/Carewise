@@ -1021,10 +1021,28 @@ body.nav-open {
   height: auto;
 }
 .marquee-track > .quote-card {
-  width: min(84vw, 24rem);
+  width: min(78vw, 18.5rem);
+  padding: 1.5rem;
+}
+.marquee-track > .quote-card .mark {
+  font-size: 2.75rem;
+  margin-bottom: 0.9rem;
+}
+.marquee-track > .quote-card p {
+  font-size: 1rem;
+  line-height: 1.45;
+}
+.marquee-track > .quote-card footer {
+  margin-top: 1.1rem;
+  font-size: 0.82rem;
+}
+.marquee-track > .quote-card footer span:first-child {
+  width: 2.2rem;
+  height: 2.2rem;
+  font-size: 0.7rem;
 }
 .marquee--slow .marquee-track {
-  animation-duration: 70s;
+  animation-duration: 90s;
 }
 .marquee-track > .card:hover {
   transform: none;

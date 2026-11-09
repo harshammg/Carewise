@@ -2349,10 +2349,20 @@ html {
 }
 .ig-row--reels .ig-card {
   height: auto;
-  aspect-ratio: 9 / 16;
+  aspect-ratio: 4 / 5;
+}
+/* Crop the embed to its video area: hide Instagram's profile header and
+   like/comment footer by pushing them outside the card's bounds. */
+.ig-card--reel {
+  position: relative;
+  background: var(--ink);
 }
 .ig-row--reels .ig-card--reel iframe {
-  height: 100%;
+  position: absolute;
+  left: 0;
+  top: -54px;
+  width: 100%;
+  height: calc(100% + 54px + 260px);
 }
 .ig-row--reels .ig-card--live {
   aspect-ratio: 9 / 16;

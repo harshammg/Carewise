@@ -486,7 +486,7 @@ def home_page():
         <div class="wrap">
           <div class="hero-copy reveal in">
             <span class="eyebrow">Carewise Centre · Mysuru</span>
-            <h1>Specialist care for recovery, <span class="serif-italic">comfort and dignity.</span></h1>
+            <h1>Specialized care for recovery, <span class="serif-italic">comfort and dignity.</span></h1>
             <p class="lead">Neuro rehabilitation after stroke, brain or spinal injury and surgery, for patients of any age. Palliative and elderly care when comfort comes first. Doctors and nurses, 24/7.</p>
             <div class="hero-actions">
               <a class="btn btn-primary btn-lg" href="centre.html">{ico("building-2")} Explore the Centre</a>

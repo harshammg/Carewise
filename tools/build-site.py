@@ -596,7 +596,7 @@ def home_page():
         ("How quickly can care start?", "Home care usually begins within 24 to 48 hours of assessment. Admission to the centre can often be arranged the same day."),
     ]), "bg-sand")
 
-    return hero + centre_spot + neuro + palliative + quote + conditions + rooms + stats(dark=True) + video_stories + home_row + questions + cta("Ready to visit Carewise Centre?", "Book a walk-through with our care coordinator, or call to discuss recovery for your loved one.")
+    return hero + centre_spot + neuro + palliative + quote + facility_section() + conditions + rooms + stats(dark=True) + video_stories + home_row + questions + cta("Ready to visit Carewise Centre?", "Book a walk-through with our care coordinator, or call to discuss recovery for your loved one.")
 
 
 def about_page():

@@ -1,4 +1,4 @@
-// Vercel serverless function: returns the latest @care_wise_ posts as JSON.
+// Vercel serverless function: returns the latest @carewise_mysuru posts as JSON.
 // Needs INSTAGRAM_ACCESS_TOKEN (long-lived token from "Instagram API with
 // Instagram Login") in the project's environment variables. Responses are
 // cached at the edge for an hour, so Instagram is called at most ~24x/day.

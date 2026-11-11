@@ -176,7 +176,7 @@ def footer():
             {brand(white=True)}
             <p>Mysuru's first palliative and neurorehabilitation centre. Doctor-guided, dignified care for your loved ones, at our centre or at home.</p>
             <div class="social">
-              <a href="https://www.instagram.com/care_wise_/" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+              <a href="https://www.instagram.com/carewise_mysuru/" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
               <a href="https://linkedin.com/company/carewise" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a>
               <a href="{WA}" aria-label="WhatsApp">{ico("message-circle")}</a>
             </div>
@@ -387,10 +387,10 @@ HOME_SERVICES = [
     ("activity", "Chronic condition care", "A plan and regular reviews for long-term illnesses."),
 ]
 
-INSTAGRAM_HANDLE = "care_wise_"
+INSTAGRAM_HANDLE = "carewise_mysuru"
 INSTAGRAM_URL = f"https://www.instagram.com/{INSTAGRAM_HANDLE}/"
 # Accounts shown in the reels strip, in order. Each entry: (handle, [reel shortcodes, newest first]).
-# Shortcode = the part after /reel/ in a reel URL. The live API (when configured) refreshes @care_wise_.
+# Shortcode = the part after /reel/ in a reel URL. The live API (when configured) refreshes @carewise_mysuru.
 # Video testimonials shown on the home page and the Videos page. Each entry is
 # ("instagram", "<reel shortcode>") or ("youtube", "<video id>"). Newest first.
 VIDEO_TESTIMONIALS = []

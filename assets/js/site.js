@@ -93,6 +93,35 @@
     }, every);
   });
 
+  // Video testimonials: click to play (one at a time), click again to pause
+  var vtCards = document.querySelectorAll(".vt-card");
+  if (vtCards.length) {
+    var current = null;
+    function stop(card) {
+      if (!card) return;
+      var v = card.querySelector("video");
+      v.pause();
+      v.controls = false;
+      card.classList.remove("is-playing");
+    }
+    vtCards.forEach(function (card) {
+      var v = card.querySelector("video");
+      function play() {
+        if (current && current !== card) stop(current);
+        current = card;
+        card.classList.add("is-playing");
+        v.controls = true;
+        v.play();
+      }
+      card.querySelector(".vt-play").addEventListener("click", play);
+      v.addEventListener("click", function () {
+        if (v.paused) play(); else { stop(card); }
+      });
+      v.addEventListener("ended", function () { stop(card); v.currentTime = 0; });
+    });
+    document.addEventListener("visibilitychange", function () { if (document.hidden) stop(current); });
+  }
+
   // Collapsible grids: show the first N cards, toggle the rest with View more
   document.querySelectorAll(".grid[data-collapsible]").forEach(function (grid) {
     var n = parseInt(grid.getAttribute("data-collapsible"), 10) || 3;

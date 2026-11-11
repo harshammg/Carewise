@@ -395,6 +395,30 @@ INSTAGRAM_URL = f"https://www.instagram.com/{INSTAGRAM_HANDLE}/"
 # ("instagram", "<reel shortcode>") or ("youtube", "<video id>"). Newest first.
 VIDEO_TESTIMONIALS = []
 
+# Local video testimonials. Source files live in Testimonial/ (kept out of git);
+# tools/encode-testimonials.py writes 720x1280 MP4s + posters to assets/video/testimonials/.
+VIDEO_DIR = ROOT / "assets" / "video" / "testimonials"
+LOCAL_VIDEOS = [
+    ("anu", "Anu", "Daughter of a patient"),
+    ("vidhya-shankar", "Dr. Vidhya Shankar", "Referring doctor"),
+    ("kemparaju", "Kemparaju", "Patient"),
+    ("krishna", "Krishna", "Patient's family"),
+    ("mandya-couple", "A couple from Mandya", "Patient and spouse"),
+    ("nagarathamma", "Nagarathamma", "Patient"),
+    ("narayan-murthy", "Narayan Murthy", "Patient"),
+    ("raghu", "Raghu", "Patient's family"),
+]
+LOCAL_VIDEOS = [v for v in LOCAL_VIDEOS if (VIDEO_DIR / f"{v[0]}.mp4").exists()]
+
+
+def local_video_card(slug, name, role):
+    return f'''
+            <li class="vt-card reveal">
+              <video class="vt-video" preload="none" playsinline poster="assets/video/testimonials/{slug}.jpg" src="assets/video/testimonials/{slug}.mp4" aria-label="Testimonial from {name}"></video>
+              <button class="vt-play" type="button" aria-label="Play testimonial from {name}">{ico("play")}</button>
+              <div class="vt-meta"><strong>{name}</strong><span>{role}</span></div>
+            </li>'''
+
 
 def video_card(kind, code, title=""):
     if kind == "youtube":
@@ -414,7 +438,10 @@ def video_stories_section():
             </div>
             <div class="ig-tools"><a class="btn btn-dark" href="{INSTAGRAM_URL}" target="_blank" rel="noopener">{ig_svg} Follow @{INSTAGRAM_HANDLE}</a></div>
           </div>'''
-    if VIDEO_TESTIMONIALS:
+    if LOCAL_VIDEOS:
+        cards = "".join(local_video_card(*v) for v in LOCAL_VIDEOS)
+        body = f'<ul class="vt-row reveal" data-vt>{cards}</ul>'
+    elif VIDEO_TESTIMONIALS:
         cards = "".join(video_card(k, c) for k, c in VIDEO_TESTIMONIALS)
         body = f'<ul class="ig-row ig-row--reels reveal" data-ig data-ig-type="reels" data-ig-account="{INSTAGRAM_HANDLE}">{cards}</ul>'
     else:
@@ -596,7 +623,7 @@ def home_page():
         ("How quickly can care start?", "Home care usually begins within 24 to 48 hours of assessment. Admission to the centre can often be arranged the same day."),
     ]), "bg-sand")
 
-    return hero + centre_spot + neuro + palliative + quote + facility_section() + conditions + rooms + stats(dark=True) + video_stories + home_row + questions + cta("Ready to visit Carewise Centre?", "Book a walk-through with our care coordinator, or call to discuss recovery for your loved one.")
+    return hero + centre_spot + neuro + video_stories + palliative + quote + facility_section() + conditions + rooms + stats(dark=True) + home_row + questions + cta("Ready to visit Carewise Centre?", "Book a walk-through with our care coordinator, or call to discuss recovery for your loved one.")
 
 
 def about_page():
@@ -717,14 +744,17 @@ def gallery_page():
 def videos_page():
     body = page_hero("Videos &amp; stories", "Hear it from <span class='serif-italic'>our families.</span>",
                      "Sons, daughters and spouses on what recovery and care at Carewise meant for them.")
-    if VIDEO_TESTIMONIALS:
+    if LOCAL_VIDEOS:
+        cards = "".join(local_video_card(*v) for v in LOCAL_VIDEOS)
+        body += section(section_head("Video stories", "Families share their stories") + f'<ul class="vt-grid" data-vt>{cards}</ul>')
+    elif VIDEO_TESTIMONIALS:
         cards = "".join(f'<li class="reveal">{video_card(k, c)}</li>' for k, c in VIDEO_TESTIMONIALS)
         body += section(section_head("Video stories", "Families share their stories") + f'<ul class="grid grid-3 video-grid">{cards}</ul>')
-    body += section(section_head("Written stories", "Heartfelt stories from our families") + testimonials(), "bg-sand" if VIDEO_TESTIMONIALS else "")
+    body += section(section_head("Written stories", "Heartfelt stories from our families") + testimonials(), "bg-sand" if (LOCAL_VIDEOS or VIDEO_TESTIMONIALS) else "")
     body += section(f'''
           <div class="pall-note reveal">
             <span class="ico-ring">{ico("clapperboard")}</span>
-            <p>Video stories are being filmed with families at the Centre. If your family would like to share your experience, we would be honoured to record it.</p>
+            <p>If your family would like to share your experience at Carewise, we would be honoured to record it.</p>
             <a class="btn btn-primary" href="contact.html">{ico("phone-call")} Share your story</a>
           </div>''')
     body += cta()

@@ -2613,3 +2613,38 @@ html {
     opacity: 0;
   }
 }
+
+/* ---- Mobile: hero photo pans across its full width ---- */
+@media (max-width: 899px) {
+  .hero-slides img,
+  .hero-slides img.is-active {
+    width: auto;
+    height: 100%;
+    max-width: none;
+    left: 0;
+    object-fit: cover;
+    object-position: center;
+    transform: none;
+    animation: heroPan 22s ease-in-out infinite alternate;
+  }
+  .hero-slides img.is-prev {
+    animation: none;
+  }
+  .hero-slides img:not(.is-active):not(.is-prev) {
+    animation: none;
+  }
+}
+@keyframes heroPan {
+  from {
+    translate: calc(-100% + 100vw) 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-slides img {
+    animation: none !important;
+    translate: 0 0;
+  }
+}

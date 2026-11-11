@@ -434,11 +434,19 @@ ROOMS = f'''
           </div>'''
 
 
+HERO_SLIDES = [
+    IMG["hero"],
+    ("assets/img/facility/facility-09.jpg", "Rehabilitation ward at Carewise Centre"),
+    IMG["family"],
+    ("assets/img/facility/facility-06.jpg", "Carewise Centre entrance, Mysuru"),
+]
+
+
 def home_page():
     hero = f'''
       <section class="hero hero--bg">
-        <div class="hero-bg">
-          {img("hero", loading="eager")}
+        <div class="hero-bg" data-slideshow data-interval="6000">
+          {"".join(f'<img src="{src}" alt="{alt}" loading="{"eager" if i == 0 else "lazy"}"{" class=\"is-active\"" if i == 0 else ""} />' for i, (src, alt) in enumerate(HERO_SLIDES))}
           <div class="hero-shade"></div>
         </div>
         <div class="wrap">

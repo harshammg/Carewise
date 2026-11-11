@@ -147,8 +147,8 @@
 .hero--bg .blob {
   display: none;
 }
-.hero-bg img {
-  animation: kenburns 18s ease-in-out infinite alternate;
+.hero-bg img.is-active {
+  animation: kenburns 14s ease-in-out forwards;
 }
 @keyframes kenburns {
   from {

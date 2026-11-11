@@ -21,7 +21,7 @@ YEAR = "2026"
 
 IMG = {
     "hero": ("assets/img/hero-family-nurse.png", "Elderly father smiling with his daughter and a Carewise nurse"),
-    "room": ("assets/img/facility/facility-02.jpg", "Private room at Carewise Centre, Mysuru"),
+    "room": ("assets/img/facility/facility-03.jpg", "Private room at Carewise Centre, Mysuru"),
     "room2": ("assets/img/facility/facility-09.jpg", "Rehabilitation ward at Carewise Centre"),
     "home": ("assets/img/home-care-nurse-visit.png", "Nurse visiting an elderly man at home"),
     "family": ("assets/img/elderly-couple-family.png", "Elderly couple with their adult children"),
@@ -400,7 +400,7 @@ FACILITY = [
 
 
 # Photos used in the Centre slideshow: the strongest, most varied views only.
-SLIDES = ["facility-06.jpg", "facility-09.jpg", "facility-02.jpg", "facility-01.jpg", "facility-10.jpg", "facility-05.jpg"]
+SLIDES = ["facility-06.jpg", "facility-09.jpg", "facility-03.jpg", "facility-01.jpg", "facility-10.jpg", "facility-05.jpg"]
 
 
 def facility_section(limit=10):

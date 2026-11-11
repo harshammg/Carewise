@@ -164,10 +164,10 @@
         "Care type: " + (fd.get("care_type") || "-"),
         "Details: " + (fd.get("message") || "-"),
       ];
-      var url = "https://wa.me/919606268777?text=" + encodeURIComponent(lines.join("\n"));
+      var url = "https://wa.me/917619457863?text=" + encodeURIComponent(lines.join("\n"));
       window.open(url, "_blank", "noopener");
       var note = form.querySelector(".form-note");
-      if (note) note.textContent = "Opening WhatsApp with your message. If it did not open, call +91 96062 68777.";
+      if (note) note.textContent = "Opening WhatsApp with your message. If it did not open, call +91 76194 57863.";
     });
   }
 })();

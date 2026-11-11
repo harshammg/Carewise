@@ -11,9 +11,11 @@ ROOT = Path(__file__).resolve().parent.parent
 import time
 V = str(int(time.time()))  # cache-busting stamp for css/js links
 
-PHONE = "+91 96062 68777"
-TEL = "tel:+919606268777"
-WA = "https://wa.me/919606268777"
+PHONE = "+91 76194 57863"
+PHONE2 = "+91 76194 57864"
+TEL = "tel:+917619457863"
+TEL2 = "tel:+917619457864"
+WA = "https://wa.me/917619457863"
 EMAIL = "support@carewise.in"
 YEAR = "2026"
 
@@ -159,7 +161,7 @@ def footer():
           <div>
             <h4>Reach us</h4>
             <ul class="footer-contact">
-              <li>{ico("phone")}<a href="{TEL}">{PHONE}</a></li>
+              <li>{ico("phone")}<span><a href="{TEL}">{PHONE}</a><br /><a href="{TEL2}">{PHONE2}</a></span></li>
               <li>{ico("mail")}<a href="mailto:{EMAIL}">{EMAIL}</a></li>
               <li>{ico("map-pin")}<span>Carewise Healthcare, Mysuru, Karnataka, India</span></li>
               <li>{ico("clock")}<span>Centre open 24/7 · Enquiries 8am–9pm</span></li>
@@ -347,39 +349,36 @@ INSTAGRAM_HANDLE = "care_wise_"
 INSTAGRAM_URL = f"https://www.instagram.com/{INSTAGRAM_HANDLE}/"
 # Accounts shown in the reels strip, in order. Each entry: (handle, [reel shortcodes, newest first]).
 # Shortcode = the part after /reel/ in a reel URL. The live API (when configured) refreshes @care_wise_.
-INSTAGRAM_ACCOUNTS = [
-    ("care_wise_", []),
-    ("senior_sambhrama", ["DfeODzQhmtJ", "DfbdvpwPID-", "DfZCed7hSbx", "DfUOTNahB09", "DfLvlK5BsyF",
-                          "DfJY3eAhxHK", "DfFodytzOYe", "DfE5kdwBbBE", "DfEK0yWhxkx", "DfDGTsjBIL0"]),
-]
+# Video testimonials shown on the home page and the Videos page. Each entry is
+# ("instagram", "<reel shortcode>") or ("youtube", "<video id>"). Newest first.
+VIDEO_TESTIMONIALS = []
 
 
-def instagram_section():
-    cards = ""
-    for handle, codes in INSTAGRAM_ACCOUNTS:
-        cards += "".join(f'''
-            <li class="ig-card ig-card--reel" data-account="{handle}">
-              <iframe src="https://www.instagram.com/reel/{code}/embed/" title="Instagram reel by @{handle}" loading="lazy" allowtransparency="true" scrolling="no" frameborder="0"></iframe>
-            </li>''' for code in codes)
-    row = f'<ul class="ig-row ig-row--reels reveal" data-ig data-ig-type="reels" data-ig-account="{INSTAGRAM_HANDLE}">{cards}</ul>'
-    if not cards:
-        row += f'''
-          <div class="ig-empty reveal" data-ig-empty>
-            <span class="ico-ring">{ico("clapperboard")}</span>
-            <div><h3>New reels are on their way</h3><p>Follow <a href="{INSTAGRAM_URL}" target="_blank" rel="noopener">@{INSTAGRAM_HANDLE}</a> to see them first.</p></div>
-          </div>'''
+def video_card(kind, code, title=""):
+    if kind == "youtube":
+        src = f"https://www.youtube-nocookie.com/embed/{code}?rel=0&modestbranding=1"
+        return f'<li class="ig-card ig-card--yt"><iframe src="{src}" title="{title or "Family story"}" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe></li>'
+    return f'<li class="ig-card ig-card--reel"><iframe src="https://www.instagram.com/reel/{code}/embed/" title="{title or "Family story on Instagram"}" loading="lazy" allowtransparency="true" scrolling="no" frameborder="0"></iframe></li>'
+
+
+def video_stories_section():
     ig_svg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>'
-    follows = "".join(f'<a class="btn {"btn-dark" if i == 0 else "btn-outline"}" href="https://www.instagram.com/{h}/" target="_blank" rel="noopener">{ig_svg} @{h}</a>' for i, (h, _) in enumerate(INSTAGRAM_ACCOUNTS))
     head = f'''
           <div class="ig-head reveal">
             <div>
-              <span class="eyebrow">Follow our journey</span>
-              <h2>Reels from <span class="serif-italic">Carewise &amp; Senior Sambhrama</span></h2>
-              <p class="lead">Short films of everyday life at the Carewise Centre, our community events and the families we care for, straight from Instagram.</p>
+              <span class="eyebrow">In their own words</span>
+              <h2>Families share <span class="serif-italic">their stories</span></h2>
+              <p class="lead">Sons, daughters and spouses on what recovery and care at Carewise meant for their family.</p>
             </div>
-            <div class="ig-tools">{follows}</div>
-          </div>{row}'''
-    return section(head, "", "instagram")
+            <div class="ig-tools"><a class="btn btn-dark" href="{INSTAGRAM_URL}" target="_blank" rel="noopener">{ig_svg} Follow @{INSTAGRAM_HANDLE}</a></div>
+          </div>'''
+    if VIDEO_TESTIMONIALS:
+        cards = "".join(video_card(k, c) for k, c in VIDEO_TESTIMONIALS)
+        body = f'<ul class="ig-row ig-row--reels reveal" data-ig data-ig-type="reels" data-ig-account="{INSTAGRAM_HANDLE}">{cards}</ul>'
+    else:
+        body = testimonials() + f'''
+          <p class="center muted reveal" style="margin-top:1.5rem;font-size:.9rem">Video stories are being filmed with families at the Centre and will appear here. Follow <a href="{INSTAGRAM_URL}" target="_blank" rel="noopener">@{INSTAGRAM_HANDLE}</a> to see them first.</p>'''
+    return section(head + body, "", "stories")
 
 
 FACILITY = [
@@ -398,6 +397,10 @@ FACILITY = [
     ("facility-14.jpg", "Lamp lighting at the inauguration"),
     ("facility-12.jpg", "Opening day at the Centre"),
 ]
+
+
+# Photos used in the Centre slideshow: the strongest, most varied views only.
+SLIDES = ["facility-06.jpg", "facility-09.jpg", "facility-02.jpg", "facility-01.jpg", "facility-10.jpg", "facility-05.jpg"]
 
 
 def facility_section(limit=10):
@@ -439,10 +442,10 @@ def home_page():
           <div class="hero-shade"></div>
         </div>
         <div class="wrap">
-          <div class="hero-copy reveal in">
-            <span class="eyebrow">Carewise Centre · Mysuru's first palliative &amp; neurorehabilitation centre</span>
-            <h1>Specialist neuro rehabilitation, <span class="serif-italic">one steady step at a time.</span></h1>
-            <p class="lead">At Carewise Centre, doctors, physiotherapists and 24/7 nurses help your parents recover from stroke, brain and spinal injury and major surgery, with palliative care when comfort matters most. Home visits are available too.</p>
+          <div class="hero-copy hero-panel reveal in">
+            <span class="eyebrow">Carewise Centre · Mysuru</span>
+            <h1>We help your parents <span class="serif-italic">recover.</span></h1>
+            <p class="lead">Specialist neuro rehabilitation after stroke, injury or surgery, with 24/7 nursing and daily doctor rounds. And when recovery is not the goal, gentle palliative and elderly care that puts comfort and dignity first.</p>
             <div class="hero-actions">
               <a class="btn btn-primary btn-lg" href="centre.html">{ico("building-2")} Explore the Centre</a>
               <a class="btn btn-ghost-light btn-lg" href="contact.html">{ico("phone-call")} Talk to our team</a>
@@ -472,7 +475,7 @@ def home_page():
                                  "The same team provides palliative and long-term medical care, so your parents never have to move when their needs change."],
                                 ["Neurorehabilitation led by doctors and senior physiotherapists", "24/7 nursing with ventilator, BiPAP and CPAP support", "Private rooms with an attendant bed, or a general ward", "Transparent daily updates to the family, wherever you live"],
                                 cta_link=("centre.html", "Explore the Centre"),
-                                slides=[(f"assets/img/facility/{f}", a) for f, a in FACILITY[:10]]))
+                                slides=[(f"assets/img/facility/{f}", a) for f, a in FACILITY if f in SLIDES]))
 
     neuro_items = [
         ("brain", "Stroke recovery", "Early mobilisation, gait training and arm and hand retraining to regain independence after a stroke."),
@@ -497,6 +500,21 @@ def home_page():
         ("Home transition", "Discharge planning, home exercises and, if needed, home visits from the same team."),
     ]), "bg-sand", "neurorehab")
 
+    palliative = section(section_head("Palliative &amp; elderly care", "When comfort matters more than cure",
+                                      "Carewise began as Mysuru's first palliative care centre. That care is still at our heart: for serious illness, for the last stage of life, and for parents who simply need skilled, kind support every day.") + icon_cards([
+        ("heart-handshake", "Palliative care", "Pain and symptom relief led by doctors, with nursing round the clock and honest, gentle conversations with the family."),
+        ("sunrise", "End-of-life care", "A calm private room, family by the bedside at any hour, and a team that keeps your parent comfortable and at peace."),
+        ("user-round", "Elderly care", "Daily living support, medication, nutrition and companionship for parents who need more help than home can give."),
+        ("puzzle", "Dementia &amp; Alzheimer's", "A safe, structured routine, familiar faces and patient care that reduces anxiety and keeps dignity intact."),
+        ("ribbon", "Cancer support", "Comfort-focused care through treatment and beyond, including nutrition, wound care and emotional support."),
+        ("calendar-clock", "Long-term medical care", "For diabetes, heart, kidney and multi-morbidity conditions that need supervision month after month."),
+    ]) + f'''
+          <div class="pall-note reveal">
+            <span class="ico-ring">{ico("message-square-heart")}</span>
+            <p>Families tell us the hardest part is not knowing what to do next. Call us and a care coordinator will listen, explain the options and help you decide, with no pressure to admit.</p>
+            <a class="btn btn-primary" href="contact.html">{ico("phone-call")} Talk to us</a>
+          </div>''', "bg-sand", "palliative")
+
     quote = f'''
       <section class="section quote-band bg-teal">
         <div class="wrap">
@@ -511,7 +529,7 @@ def home_page():
     conditions = section(section_head("Conditions we treat at the Centre", "Comprehensive support for chronic and acute conditions") + icon_cards(CONDITIONS, cols="grid-4", show=4)
                          + f'<p class="center" style="margin-top:1.5rem"><a class="text-link" href="services.html">See all services {ico("arrow-right")}</a></p>', "bg-sand")
 
-    instagram = instagram_section()
+    video_stories = video_stories_section()
 
     home_row = f'''
       <section class="section--tight home-note">
@@ -529,8 +547,6 @@ def home_page():
 
     rooms = section(section_head("Your comfort is our priority", "Rooms designed for healing and peace") + ROOMS, "bg-sand")
 
-    stories = section(section_head("Stories", "Heartfelt stories from our families") + testimonials())
-
     questions = section(section_head("Questions", "What families usually ask us") + faq([
         ("Who is the Centre right for?", "Anyone recovering from a stroke, brain or spinal injury or major surgery, and anyone who needs palliative or long-term medical care with 24/7 nursing. Our doctor assesses your parent and sets a plan on day one."),
         ("Can I get updates if I live in another city or abroad?", "Yes. Every family receives daily updates from the care team, and you can reach your coordinator at any time."),
@@ -538,7 +554,7 @@ def home_page():
         ("How quickly can care start?", "Home care usually begins within 24 to 48 hours of assessment. Admission to the centre can often be arranged the same day."),
     ]), "bg-sand")
 
-    return hero + centre_spot + neuro + quote + facility_section() + conditions + rooms + stats(dark=True) + instagram + home_row + stories + questions + cta("Ready to visit Carewise Centre?", "Book a walk-through with our care coordinator, or call to discuss your parent's recovery.")
+    return hero + centre_spot + neuro + palliative + quote + conditions + rooms + stats(dark=True) + video_stories + home_row + questions + cta("Ready to visit Carewise Centre?", "Book a walk-through with our care coordinator, or call to discuss your parent's recovery.")
 
 
 def about_page():
@@ -657,27 +673,25 @@ def gallery_page():
 
 
 def videos_page():
-    vids = [
-        ("A day at Carewise Centre", "How our nurses, doctors and therapists care for residents from morning rounds to evening.", "room"),
-        ("Home care: a family's experience", "A daughter in Bengaluru shares how daily updates kept her close to her father's recovery.", "home"),
-        ("Why palliative care matters", "Our medical team explains comfort-focused care and how it supports the whole family.", "family"),
-    ]
-    cards = "".join(f'''
-            <article class="reveal">
-              <a class="video" href="{WA}" aria-label="Watch: {t}">{img(k)}<span class="play"><span>{ico("play")}</span></span></a>
-              <div class="video-meta"><h3>{t}</h3><p>{d}</p></div>
-            </article>''' for t, d, k in vids)
     body = page_hero("Videos &amp; stories", "Hear it from <span class='serif-italic'>our families.</span>",
-                     "Short films and stories from the people who know Carewise best.")
-    body += section(f'<div class="grid grid-3">{cards}</div><p class="center muted" style="margin-top:2.5rem;font-size:.9rem">Videos are being added. Message us on WhatsApp to receive our latest stories.</p>')
-    body += section(section_head("Stories", "Heartfelt stories from our families") + testimonials(), "bg-sand")
+                     "Sons, daughters and spouses on what recovery and care at Carewise meant for them.")
+    if VIDEO_TESTIMONIALS:
+        cards = "".join(f'<li class="reveal">{video_card(k, c)}</li>' for k, c in VIDEO_TESTIMONIALS)
+        body += section(section_head("Video stories", "Families share their stories") + f'<ul class="grid grid-3 video-grid">{cards}</ul>')
+    body += section(section_head("Written stories", "Heartfelt stories from our families") + testimonials(), "bg-sand" if VIDEO_TESTIMONIALS else "")
+    body += section(f'''
+          <div class="pall-note reveal">
+            <span class="ico-ring">{ico("clapperboard")}</span>
+            <p>Video stories are being filmed with families at the Centre. If your family would like to share your experience, we would be honoured to record it.</p>
+            <a class="btn btn-primary" href="contact.html">{ico("phone-call")} Share your story</a>
+          </div>''')
     body += cta()
     return body
 
 
 def contact_page():
     info = "".join(f'<li><span class="ico-ring">{ico(i)}</span><div><strong>{t}</strong>{d}</div></li>' for i, t, d in [
-        ("phone", "Phone", f'<a href="{TEL}">{PHONE}</a>'),
+        ("phone", "Phone", f'<a href="{TEL}">{PHONE}</a><br /><a href="{TEL2}">{PHONE2}</a>'),
         ("message-circle", "WhatsApp", f'<a href="{WA}">Chat with us</a>'),
         ("mail", "Email", f'<a href="mailto:{EMAIL}">{EMAIL}</a>'),
         ("map-pin", "Address", "Carewise Healthcare, Mysuru, Karnataka, India"),

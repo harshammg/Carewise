@@ -143,6 +143,50 @@
     });
   }
 
+  // Image lightbox for photo tiles (each grid is its own prev/next group)
+  var ilb = document.getElementById("img-lightbox");
+  if (ilb && document.querySelector(".img-open")) {
+    var ilbImg = ilb.querySelector(".img-lb-img");
+    var ilbCap = ilb.querySelector(".img-lb-caption");
+    var group = [], gi = 0, ilbFocus = null;
+    function ishow(i) {
+      gi = (i + group.length) % group.length;
+      var b = group[gi];
+      ilbImg.src = b.getAttribute("data-src");
+      ilbImg.alt = b.getAttribute("data-caption") || "";
+      ilbCap.textContent = b.getAttribute("data-caption") || "";
+    }
+    function iopen(btn) {
+      var host = btn.closest(".fac-grid") || document;
+      group = Array.prototype.slice.call(host.querySelectorAll(".img-open"));
+      ilbFocus = btn;
+      ilb.hidden = false;
+      document.body.classList.add("vt-lock");
+      requestAnimationFrame(function () { ilb.classList.add("is-open"); });
+      ishow(group.indexOf(btn));
+      ilb.querySelector(".vt-lb-close").focus();
+    }
+    function iclose() {
+      ilb.classList.remove("is-open");
+      document.body.classList.remove("vt-lock");
+      setTimeout(function () { ilb.hidden = true; ilbImg.removeAttribute("src"); }, 250);
+      if (ilbFocus && ilbFocus.focus) ilbFocus.focus();
+    }
+    document.querySelectorAll(".img-open").forEach(function (b) {
+      b.addEventListener("click", function () { iopen(b); });
+    });
+    ilb.querySelector(".vt-lb-close").addEventListener("click", iclose);
+    ilb.querySelector(".vt-lb-prev").addEventListener("click", function () { ishow(gi - 1); });
+    ilb.querySelector(".vt-lb-next").addEventListener("click", function () { ishow(gi + 1); });
+    ilb.addEventListener("click", function (e) { if (e.target === ilb) iclose(); });
+    document.addEventListener("keydown", function (e) {
+      if (ilb.hidden) return;
+      if (e.key === "Escape") iclose();
+      else if (e.key === "ArrowRight") ishow(gi + 1);
+      else if (e.key === "ArrowLeft") ishow(gi - 1);
+    });
+  }
+
   // Collapsible grids: show the first N cards, toggle the rest with View more
   document.querySelectorAll(".grid[data-collapsible]").forEach(function (grid) {
     var n = parseInt(grid.getAttribute("data-collapsible"), 10) || 3;

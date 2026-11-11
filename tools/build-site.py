@@ -220,6 +220,7 @@ def footer():
       </div>
     </footer>
     {video_lightbox() if LOCAL_VIDEOS else ""}
+    {image_lightbox()}
     <div class="sticky-bar">
       <a class="btn btn-dark" href="{TEL}" aria-label="Call {PHONE}">{ico("phone")}<span>Call {PHONE}</span></a>
       <a class="btn btn-wa" href="{WA}" aria-label="Chat on WhatsApp">{ico("message-circle")}<span>Chat on WhatsApp</span></a>
@@ -423,6 +424,19 @@ def local_video_card(slug, name, role):
             </li>'''
 
 
+def image_lightbox():
+    return f'''
+    <div class="vt-lightbox img-lightbox" id="img-lightbox" hidden aria-modal="true" role="dialog" aria-label="Photo">
+      <button class="vt-lb-close" type="button" aria-label="Close">{ico("x")}</button>
+      <button class="vt-lb-nav vt-lb-prev" type="button" aria-label="Previous photo">{ico("chevron-left")}</button>
+      <figure class="img-lb-frame">
+        <img class="img-lb-img" alt="" />
+        <figcaption class="img-lb-caption"></figcaption>
+      </figure>
+      <button class="vt-lb-nav vt-lb-next" type="button" aria-label="Next photo">{ico("chevron-right")}</button>
+    </div>'''
+
+
 def video_lightbox():
     return f'''
     <div class="vt-lightbox" id="vt-lightbox" hidden aria-modal="true" role="dialog" aria-label="Video testimonial">
@@ -491,7 +505,9 @@ SLIDES = ["facility-06.jpg", "facility-09.jpg", "facility-01.jpg", "facility-10.
 def facility_section(limit=5):
     tiles = "".join(f'''
             <figure class="fac-tile{' fac-tile--wide' if i == 0 else ''} reveal">
-              <img src="assets/img/facility/{f}" alt="{a}" loading="lazy" />
+              <button class="img-open" type="button" data-src="assets/img/facility/{f}" data-caption="{a}" aria-label="View larger: {a}">
+                <img src="assets/img/facility/{f}" alt="{a}" loading="lazy" />
+              </button>
               <figcaption>{a}</figcaption>
             </figure>''' for i, (f, a) in enumerate(FACILITY[:limit]))
     return section(section_head("Our facilities at Mysuru", "A calm, purpose-built centre for recovery",
@@ -749,10 +765,16 @@ def team_page():
 
 
 def gallery_page():
-    grid = "".join(f'<figure class="{"wide " if i in (0, 5, 10) else ""}reveal"><img src="assets/img/facility/{f}" alt="{a}" loading="lazy" /><figcaption>{a}</figcaption></figure>' for i, (f, a) in enumerate(FACILITY))
+    grid = "".join(f'''
+            <figure class="fac-tile reveal">
+              <button class="img-open" type="button" data-src="assets/img/facility/{f}" data-caption="{a}" aria-label="View larger: {a}">
+                <img src="assets/img/facility/{f}" alt="{a}" loading="lazy" />
+              </button>
+              <figcaption>{a}</figcaption>
+            </figure>''' for f, a in FACILITY)
     body = page_hero("Facility gallery", "Take a look <span class='serif-italic'>inside Carewise Centre.</span>",
                      "Our rooms, rehabilitation ward, therapy space and the day we opened our doors in Mysuru.")
-    body += section(f'<div class="gallery">{grid}</div>')
+    body += section(f'<div class="fac-grid fac-grid--uniform">{grid}</div>')
     body += cta("Prefer to see it in person?", "Book a visit and walk through the Centre with our coordinator.")
     return body
 

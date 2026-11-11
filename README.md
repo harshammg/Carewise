@@ -39,3 +39,7 @@ To enable the live feed:
 `vercel.json` schedules `/api/instagram-refresh` every Monday, which extends the token's validity. If Meta ever returns a different token string, the function logs a warning and you paste the new value into Vercel. Responses are cached for an hour at the edge.
 
 Local preview with `python -m http.server` has no `/api`, so you will always see the embed fallback locally; `vercel dev` runs the function.
+
+## Hero background photos
+
+Put the photos you want behind the home-page hero in `hero-images/` (JPG, PNG, HEIC or WEBP), then run `python tools/build-site.py`. They are resized into `assets/img/hero/` and the hero slides through them in filename order. One photo shows a still image; two or more slide. Delete a file and rebuild to remove it.

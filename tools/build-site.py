@@ -47,6 +47,48 @@ def ico(name, cls=""):
     return f'<i data-lucide="{name}"{c}></i>'
 
 
+HERO_SRC = ROOT / "hero-images"
+HERO_OUT = ROOT / "assets" / "img" / "hero"
+
+
+def build_hero_images():
+    """Resize every photo in hero-images/ into assets/img/hero/ and return their web paths."""
+    try:
+        from PIL import Image, ImageOps
+        try:
+            import pillow_heif
+            pillow_heif.register_heif_opener()
+        except Exception:
+            pass
+    except ImportError:
+        return sorted(f"assets/img/hero/{f.name}" for f in HERO_OUT.glob("*.jpg")) if HERO_OUT.exists() else []
+    HERO_OUT.mkdir(parents=True, exist_ok=True)
+    exts = {".jpg", ".jpeg", ".png", ".webp", ".heic", ".heif"}
+    sources = sorted(f for f in HERO_SRC.iterdir() if f.suffix.lower() in exts) if HERO_SRC.exists() else []
+    wanted = set()
+    for i, src in enumerate(sources, 1):
+        out = HERO_OUT / f"hero-{i:02d}.jpg"
+        wanted.add(out.name)
+        if out.exists() and out.stat().st_mtime >= src.stat().st_mtime:
+            continue
+        try:
+            im = ImageOps.exif_transpose(Image.open(src)).convert("RGB")
+        except Exception as e:
+            print("skip", src.name, e)
+            wanted.discard(out.name)
+            continue
+        im.thumbnail((1920, 1920), Image.LANCZOS)
+        im.save(out, quality=82, optimize=True, progressive=True)
+        print("hero:", src.name, "->", out.name, im.size)
+    for stale in HERO_OUT.glob("hero-*.jpg"):
+        if stale.name not in wanted:
+            stale.unlink()
+    return [f"assets/img/hero/{n}" for n in sorted(wanted)]
+
+
+HERO_IMAGES = build_hero_images()
+
+
 def img(key, cls="", loading="lazy"):
     src, alt = IMG[key]
     c = f' class="{cls}"' if cls else ""
@@ -434,19 +476,11 @@ ROOMS = f'''
           </div>'''
 
 
-HERO_SLIDES = [
-    IMG["hero"],
-    ("assets/img/facility/facility-09.jpg", "Rehabilitation ward at Carewise Centre"),
-    IMG["family"],
-    ("assets/img/facility/facility-06.jpg", "Carewise Centre entrance, Mysuru"),
-]
-
-
 def home_page():
     hero = f'''
       <section class="hero hero--bg">
-        <div class="hero-bg" data-slideshow data-interval="6000">
-          {"".join(f'<img src="{src}" alt="{alt}" loading="{"eager" if i == 0 else "lazy"}"{" class=\"is-active\"" if i == 0 else ""} />' for i, (src, alt) in enumerate(HERO_SLIDES))}
+        <div class="hero-bg hero-slides" data-slideshow data-interval="5500">
+          {"".join(f'<img src="{p}" alt="" loading="{"eager" if i == 0 else "lazy"}"{" class=\"is-active\"" if i == 0 else ""} />' for i, p in enumerate(HERO_IMAGES)) if HERO_IMAGES else img("hero", loading="eager").replace("<img ", '<img class="is-active" ')}
           <div class="hero-shade"></div>
         </div>
         <div class="wrap">

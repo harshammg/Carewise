@@ -442,7 +442,7 @@ FACILITY = [
 
 
 # Photos used in the Centre slideshow: the strongest, most varied views only.
-SLIDES = ["facility-06.jpg", "facility-09.jpg", "facility-03.jpg", "facility-01.jpg", "facility-10.jpg", "facility-05.jpg"]
+SLIDES = ["facility-06.jpg", "facility-09.jpg", "facility-01.jpg", "facility-10.jpg"]
 
 
 def facility_section(limit=10):

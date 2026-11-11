@@ -93,33 +93,54 @@
     }, every);
   });
 
-  // Video testimonials: click to play (one at a time), click again to pause
-  var vtCards = document.querySelectorAll(".vt-card");
-  if (vtCards.length) {
-    var current = null;
-    function stop(card) {
-      if (!card) return;
-      var v = card.querySelector("video");
-      v.pause();
-      v.controls = false;
-      card.classList.remove("is-playing");
+  // Video testimonials: open in a lightbox and play
+  var lb = document.getElementById("vt-lightbox");
+  var openers = Array.prototype.slice.call(document.querySelectorAll(".vt-open"));
+  if (lb && openers.length) {
+    var lbVideo = lb.querySelector(".vt-lb-video");
+    var lbName = lb.querySelector(".vt-lb-caption strong");
+    var lbRole = lb.querySelector(".vt-lb-caption span");
+    var idx = 0, lastFocus = null;
+    function show(i) {
+      idx = (i + openers.length) % openers.length;
+      var b = openers[idx];
+      lbVideo.src = b.getAttribute("data-video");
+      lbName.textContent = b.getAttribute("data-name") || "";
+      lbRole.textContent = b.getAttribute("data-role") || "";
+      var p = lbVideo.play();
+      if (p && p.catch) p.catch(function () {});
     }
-    vtCards.forEach(function (card) {
-      var v = card.querySelector("video");
-      function play() {
-        if (current && current !== card) stop(current);
-        current = card;
-        card.classList.add("is-playing");
-        v.controls = true;
-        v.play();
-      }
-      card.querySelector(".vt-play").addEventListener("click", play);
-      v.addEventListener("click", function () {
-        if (v.paused) play(); else { stop(card); }
-      });
-      v.addEventListener("ended", function () { stop(card); v.currentTime = 0; });
+    function open(i, from) {
+      lastFocus = from || document.activeElement;
+      lb.hidden = false;
+      document.body.classList.add("vt-lock");
+      requestAnimationFrame(function () { lb.classList.add("is-open"); });
+      show(i);
+      lb.querySelector(".vt-lb-close").focus();
+    }
+    function close() {
+      lb.classList.remove("is-open");
+      lbVideo.pause();
+      lbVideo.removeAttribute("src");
+      lbVideo.load();
+      document.body.classList.remove("vt-lock");
+      setTimeout(function () { lb.hidden = true; }, 250);
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    openers.forEach(function (b, i) {
+      b.addEventListener("click", function () { open(i, b); });
     });
-    document.addEventListener("visibilitychange", function () { if (document.hidden) stop(current); });
+    lb.querySelector(".vt-lb-close").addEventListener("click", close);
+    lb.querySelector(".vt-lb-prev").addEventListener("click", function () { show(idx - 1); });
+    lb.querySelector(".vt-lb-next").addEventListener("click", function () { show(idx + 1); });
+    lb.addEventListener("click", function (e) { if (e.target === lb) close(); });
+    lbVideo.addEventListener("ended", function () { show(idx + 1); });
+    document.addEventListener("keydown", function (e) {
+      if (lb.hidden) return;
+      if (e.key === "Escape") close();
+      else if (e.key === "ArrowRight") show(idx + 1);
+      else if (e.key === "ArrowLeft") show(idx - 1);
+    });
   }
 
   // Collapsible grids: show the first N cards, toggle the rest with View more

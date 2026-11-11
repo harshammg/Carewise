@@ -2688,13 +2688,31 @@ html {
   box-shadow: var(--shadow-sm);
   list-style: none;
   isolation: isolate;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
-.vt-video {
+.vt-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+.vt-open {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  display: block;
+  text-align: left;
+  cursor: pointer;
+}
+.vt-poster {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  background: var(--ink);
+  transition: transform 0.8s ease;
+}
+.vt-card:hover .vt-poster {
+  transform: scale(1.05);
 }
 .vt-play {
   position: absolute;
@@ -2702,13 +2720,6 @@ html {
   display: grid;
   place-items: center;
   background: linear-gradient(180deg, rgba(8, 36, 61, 0.05), rgba(8, 36, 61, 0.55));
-  transition: opacity 0.3s;
-}
-.vt-play svg {
-  width: 1.6rem;
-  height: 1.6rem;
-  margin-left: 3px;
-  color: var(--ink);
 }
 .vt-play::before {
   content: "";
@@ -2720,15 +2731,15 @@ html {
   box-shadow: var(--shadow-md);
   transition: transform 0.2s;
 }
-.vt-play:hover::before {
-  transform: scale(1.08);
+.vt-card:hover .vt-play::before {
+  transform: scale(1.1);
 }
 .vt-play svg {
   position: relative;
-}
-.vt-card.is-playing .vt-play {
-  opacity: 0;
-  pointer-events: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-left: 3px;
+  color: var(--ink);
 }
 .vt-meta {
   position: absolute;
@@ -2738,8 +2749,6 @@ html {
   padding: 2.5rem 1rem 1rem;
   background: linear-gradient(180deg, transparent, rgba(8, 36, 61, 0.9));
   color: var(--white);
-  pointer-events: none;
-  transition: opacity 0.3s;
 }
 .vt-meta strong {
   display: block;
@@ -2751,6 +2760,121 @@ html {
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.75);
 }
-.vt-card.is-playing .vt-meta {
+
+/* ---- Video lightbox ---- */
+.vt-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(8, 36, 61, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   opacity: 0;
+  transition: opacity 0.25s;
+}
+.vt-lightbox.is-open {
+  opacity: 1;
+}
+.vt-lightbox[hidden] {
+  display: none;
+}
+body.vt-lock {
+  overflow: hidden;
+}
+.vt-lb-frame {
+  justify-self: center;
+  width: min(92vw, calc((100vh - 7rem) * 9 / 16));
+  aspect-ratio: 9 / 16;
+  max-height: calc(100vh - 7rem);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.8);
+  position: relative;
+  transform: scale(0.96);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.vt-lightbox.is-open .vt-lb-frame {
+  transform: none;
+}
+.vt-lb-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: #000;
+}
+.vt-lb-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  padding: 1rem 1.1rem 2.5rem;
+  background: linear-gradient(180deg, rgba(8, 36, 61, 0.85), transparent);
+  color: var(--white);
+  pointer-events: none;
+}
+.vt-lb-caption strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.vt-lb-caption span {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+.vt-lb-close,
+.vt-lb-nav {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--white);
+  display: grid;
+  place-items: center;
+  transition: background 0.2s, transform 0.2s;
+}
+.vt-lb-close:hover,
+.vt-lb-nav:hover {
+  background: var(--accent);
+  color: var(--ink);
+  transform: scale(1.06);
+}
+.vt-lb-close svg,
+.vt-lb-nav svg {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+.vt-lb-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+}
+@media (max-width: 719px) {
+  .vt-lightbox {
+    grid-template-columns: 1fr;
+    padding: 3.5rem 0.75rem 0.75rem;
+  }
+  .vt-lb-nav {
+    position: absolute;
+    bottom: 1rem;
+    z-index: 2;
+  }
+  .vt-lb-prev {
+    left: 1rem;
+  }
+  .vt-lb-next {
+    right: 1rem;
+  }
+  .vt-lb-frame {
+    width: min(100%, calc((100vh - 8.5rem) * 9 / 16));
+    max-height: calc(100vh - 8.5rem);
+  }
 }

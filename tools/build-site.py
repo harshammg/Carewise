@@ -219,6 +219,7 @@ def footer():
         </div>
       </div>
     </footer>
+    {video_lightbox() if LOCAL_VIDEOS else ""}
     <div class="sticky-bar">
       <a class="btn btn-dark" href="{TEL}" aria-label="Call {PHONE}">{ico("phone")}<span>Call {PHONE}</span></a>
       <a class="btn btn-wa" href="{WA}" aria-label="Chat on WhatsApp">{ico("message-circle")}<span>Chat on WhatsApp</span></a>
@@ -414,10 +415,25 @@ LOCAL_VIDEOS = [v for v in LOCAL_VIDEOS if (VIDEO_DIR / f"{v[0]}.mp4").exists()]
 def local_video_card(slug, name, role):
     return f'''
             <li class="vt-card reveal">
-              <video class="vt-video" preload="none" playsinline poster="assets/video/testimonials/{slug}.jpg" src="assets/video/testimonials/{slug}.mp4" aria-label="Testimonial from {name}"></video>
-              <button class="vt-play" type="button" aria-label="Play testimonial from {name}">{ico("play")}</button>
-              <div class="vt-meta"><strong>{name}</strong><span>{role}</span></div>
+              <button class="vt-open" type="button" data-video="assets/video/testimonials/{slug}.mp4" data-name="{name}" data-role="{role}" aria-label="Play testimonial from {name}">
+                <img class="vt-poster" src="assets/video/testimonials/{slug}.jpg" alt="" loading="lazy" />
+                <span class="vt-play">{ico("play")}</span>
+                <span class="vt-meta"><strong>{name}</strong><span>{role}</span></span>
+              </button>
             </li>'''
+
+
+def video_lightbox():
+    return f'''
+    <div class="vt-lightbox" id="vt-lightbox" hidden aria-modal="true" role="dialog" aria-label="Video testimonial">
+      <button class="vt-lb-close" type="button" aria-label="Close">{ico("x")}</button>
+      <button class="vt-lb-nav vt-lb-prev" type="button" aria-label="Previous video">{ico("chevron-left")}</button>
+      <div class="vt-lb-frame">
+        <video class="vt-lb-video" playsinline controls preload="metadata"></video>
+        <div class="vt-lb-caption"><strong></strong><span></span></div>
+      </div>
+      <button class="vt-lb-nav vt-lb-next" type="button" aria-label="Next video">{ico("chevron-right")}</button>
+    </div>'''
 
 
 def video_card(kind, code, title=""):
@@ -434,7 +450,7 @@ def video_stories_section():
             <div>
               <span class="eyebrow">In their own words</span>
               <h2>Families share <span class="serif-italic">their stories</span></h2>
-              <p class="lead">Sons, daughters and spouses on what recovery and care at Carewise meant for their family.</p>
+              <p class="lead">Patients and families on what care at Carewise meant to them.</p>
             </div>
             <div class="ig-tools"><a class="btn btn-dark" href="{INSTAGRAM_URL}" target="_blank" rel="noopener">{ig_svg} Follow @{INSTAGRAM_HANDLE}</a></div>
           </div>'''
@@ -479,7 +495,7 @@ def facility_section(limit=5):
               <figcaption>{a}</figcaption>
             </figure>''' for i, (f, a) in enumerate(FACILITY[:limit]))
     return section(section_head("Our facilities at Mysuru", "A calm, purpose-built centre for recovery",
-                                "Private rooms, a rehabilitation ward, therapy space and a family lounge, a short drive from anywhere in Mysuru.")
+                                "Private rooms, a rehabilitation ward, therapy space and a family lounge in the heart of Mysuru.")
                    + f'<div class="fac-grid">{tiles}</div>'
                    + f'<p class="center" style="margin-top:2.5rem"><a class="btn btn-outline" href="gallery.html">See all photos {ico("arrow-right")}</a></p>',
                    "", "facilities")
@@ -514,7 +530,7 @@ def home_page():
           <div class="hero-copy reveal in">
             <span class="eyebrow">Carewise Centre · Mysuru</span>
             <h1>Specialized care for recovery, <span class="serif-italic">comfort and dignity.</span></h1>
-            <p class="lead">Neuro rehabilitation after stroke, brain or spinal injury and surgery, for patients of any age. Palliative and elderly care when comfort comes first. Doctors and nurses, 24/7.</p>
+            <p class="lead">We help patients recover after stroke, brain or spinal injury and surgery, at any age. When comfort comes first, we provide palliative and elderly care with the same warmth. Doctors and nurses, 24/7.</p>
             <div class="hero-actions">
               <a class="btn btn-primary btn-lg" href="centre.html">{ico("building-2")} Explore the Centre</a>
               <a class="btn btn-ghost-light btn-lg" href="contact.html">{ico("phone-call")} Talk to our team</a>
@@ -540,8 +556,8 @@ def home_page():
       </div>'''
 
     centre_spot = section(split("room", "Inside Carewise Centre", "A dedicated centre for recovery, rehabilitation and comfort",
-                                ["Carewise Centre in Mysuru is built for the weeks and months after a stroke, a brain or spinal injury or major surgery: round-the-clock nursing, daily doctor rounds, in-house physiotherapy and private rooms where family can stay.",
-                                 "The same team provides palliative and long-term medical care, so patients never have to move when their needs change."],
+                                ["Built for the weeks after a stroke, injury or major surgery: 24/7 nursing, daily doctor rounds, in-house physiotherapy and private rooms where family can stay.",
+                                 "The same team provides palliative and long-term care, so patients never have to move when needs change."],
                                 ["Neurorehabilitation led by doctors and senior physiotherapists", "24/7 nursing with ventilator, BiPAP and CPAP support", "Private rooms with an attendant bed, or a general ward", "Transparent daily updates to the family, wherever you live"],
                                 cta_link=("centre.html", "Explore the Centre"),
                                 slides=[(f"assets/img/facility/{f}", a) for f, a in FACILITY if f in SLIDES]))
@@ -559,7 +575,7 @@ def home_page():
     neuro_cards = "".join(f'''
             <article class="card"><span class="ico-ring">{ico(i)}</span><h3>{t}</h3><p>{d}</p></article>''' for i, t, d in neuro_items)
     neuro = section(section_head("Neurorehabilitation", "Getting back what illness took away",
-                                 "Structured, goal-based rehabilitation programmes at the Centre for the conditions families bring to us most often.") + f'''
+                                 "Goal-based programmes at the Centre for the conditions we see most often.") + f'''
           <div class="marquee reveal" aria-label="Neurorehabilitation programmes">
             <div class="marquee-track">{neuro_cards}{neuro_cards}</div>
           </div>''' + section_head("How recovery works", "A patient's path at the Centre", center=True).replace('section-head', 'section-head section-head--mid', 1) + steps([
@@ -570,7 +586,7 @@ def home_page():
     ]), "bg-sand", "neurorehab")
 
     palliative = section(section_head("Palliative &amp; elderly care", "When comfort matters more than cure",
-                                      "Carewise began as Mysuru's first palliative care centre. That care is still at our heart: for serious illness, for the last stage of life, and for elders who simply need skilled, kind support every day.") + icon_cards([
+                                      "Carewise began as Mysuru's first palliative care centre. That care is still at our heart: for serious illness, for the last stage of life, and for elders who need skilled, kind support every day.") + icon_cards([
         ("heart-handshake", "Palliative care", "Pain and symptom relief led by doctors, with nursing round the clock and honest, gentle conversations with the family."),
         ("sunrise", "End-of-life care", "A calm private room, family by the bedside at any hour, and a team that keeps your loved one comfortable and at peace."),
         ("user-round", "Elderly care", "Daily living support, medication, nutrition and companionship for elders who need more help than home can give."),

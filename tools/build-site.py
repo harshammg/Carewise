@@ -442,10 +442,10 @@ def home_page():
           <div class="hero-shade"></div>
         </div>
         <div class="wrap">
-          <div class="hero-copy hero-panel reveal in">
+          <div class="hero-copy reveal in">
             <span class="eyebrow">Carewise Centre · Mysuru</span>
             <h1>We help your parents <span class="serif-italic">recover.</span></h1>
-            <p class="lead">Specialist neuro rehabilitation after stroke, injury or surgery, with 24/7 nursing and daily doctor rounds. And when recovery is not the goal, gentle palliative and elderly care that puts comfort and dignity first.</p>
+            <p class="lead">Neuro rehabilitation after stroke, injury or surgery. Palliative and elderly care when comfort comes first. Doctors and nurses, 24/7.</p>
             <div class="hero-actions">
               <a class="btn btn-primary btn-lg" href="centre.html">{ico("building-2")} Explore the Centre</a>
               <a class="btn btn-ghost-light btn-lg" href="contact.html">{ico("phone-call")} Talk to our team</a>

@@ -2071,23 +2071,16 @@ html {
 .hero-shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(8, 36, 61, 0.22), transparent 35%, transparent 70%, rgba(8, 36, 61, 0.45));
+  background:
+    linear-gradient(90deg, rgba(8, 36, 61, 0.78) 0%, rgba(8, 36, 61, 0.5) 34%, rgba(8, 36, 61, 0.12) 62%, rgba(8, 36, 61, 0) 100%),
+    linear-gradient(180deg, rgba(8, 36, 61, 0.2), transparent 30%, transparent 70%, rgba(8, 36, 61, 0.4));
 }
-.hero-panel {
-  background: rgba(8, 36, 61, 0.72);
-  backdrop-filter: blur(14px) saturate(1.2);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: var(--r-lg);
-  padding: clamp(1.5rem, 3.5vw, 2.75rem);
-  max-width: 36rem;
-  box-shadow: 0 30px 60px -30px rgba(8, 36, 61, 0.7);
+.hero--bg .hero-copy {
+  max-width: 34rem;
+  text-shadow: 0 2px 18px rgba(8, 36, 61, 0.55);
 }
-.hero-panel h1 {
-  font-size: clamp(2.4rem, 5vw, 4rem);
-}
-.hero-panel .lead {
-  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+.hero--bg .hero-copy .lead {
+  color: rgba(255, 255, 255, 0.9);
 }
 .hero--bg .hero-bg img {
   object-position: 72% 30%;
@@ -2129,11 +2122,11 @@ html {
     align-items: flex-start;
   }
   .hero-shade {
-    background: linear-gradient(180deg, rgba(8, 36, 61, 0.3), rgba(8, 36, 61, 0.35));
+    background: linear-gradient(180deg, rgba(8, 36, 61, 0.35) 0%, rgba(8, 36, 61, 0.55) 45%, rgba(8, 36, 61, 0.85) 100%);
   }
-  .hero-panel {
+  .hero--bg .hero-copy {
     max-width: none;
-    margin-top: 42vw;
+    margin-top: 38vw;
   }
   .hero--bg .hero-badge {
     position: static;

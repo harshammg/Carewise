@@ -445,9 +445,9 @@ FACILITY = [
 SLIDES = ["facility-06.jpg", "facility-09.jpg", "facility-01.jpg", "facility-10.jpg"]
 
 
-def facility_section(limit=10):
+def facility_section(limit=5):
     tiles = "".join(f'''
-            <figure class="fac-tile{' fac-tile--wide' if i in (0, 7) else ''} reveal">
+            <figure class="fac-tile{' fac-tile--wide' if i == 0 else ''} reveal">
               <img src="assets/img/facility/{f}" alt="{a}" loading="lazy" />
               <figcaption>{a}</figcaption>
             </figure>''' for i, (f, a) in enumerate(FACILITY[:limit]))

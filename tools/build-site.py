@@ -501,7 +501,7 @@ def home_page():
     ]), "bg-sand", "neurorehab")
 
     palliative = section(section_head("Palliative &amp; elderly care", "When comfort matters more than cure",
-                                      "Carewise began as Mysuru's first palliative care centre. That care is still at our heart: for serious illness, for the last stage of life, and for parents who simply need skilled, kind support every day.") + icon_cards([
+                                      "Carewise began as Mysuru's first palliative care centre. That care is still at our heart: for serious illness, for the last stage of life, and for elders who simply need skilled, kind support every day.") + icon_cards([
         ("heart-handshake", "Palliative care", "Pain and symptom relief led by doctors, with nursing round the clock and honest, gentle conversations with the family."),
         ("sunrise", "End-of-life care", "A calm private room, family by the bedside at any hour, and a team that keeps your loved one comfortable and at peace."),
         ("user-round", "Elderly care", "Daily living support, medication, nutrition and companionship for elders who need more help than home can give."),
@@ -611,7 +611,7 @@ def home_care_page():
         ("Stay informed", "You receive daily updates and can reach the team any time."),
     ]), "bg-sand")
     body += section(split("hero", "Why families choose us", "Trusted by families in Mysuru, Bengaluru and abroad",
-                          ["Many of our families live in another city or country. Daily updates, remote doctor monitoring and a single point of contact keep you close to your parents' care wherever you are."],
+                          ["Many of our families live in another city or country. Daily updates, remote doctor monitoring and a single point of contact keep you close to your loved one's care wherever you are."],
                           ["Background-verified, trained nurses and caretakers", "Doctor-guided care plans with regular review", "Flexible hours: visits, day shifts or round-the-clock", "Transparent pricing with no hidden charges"], flip=True))
     body += section(section_head("FAQ", "Questions about care at home") + faq([
         ("Which areas do you cover?", "We serve Mysuru city and nearby areas. Contact us to confirm availability for your location."),

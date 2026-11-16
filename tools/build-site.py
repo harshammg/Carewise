@@ -4,6 +4,8 @@ Usage:  python tools/build-site.py
 All copy lives in this file; layout classes come from assets/css/site.css and
 behaviour from assets/js/site.js. Re-run after editing.
 """
+import json
+import re
 import sys
 from pathlib import Path
 
@@ -17,6 +19,11 @@ TEL = "tel:+917619457863"
 TEL2 = "tel:+917619457864"
 WA = "https://wa.me/917619457863"
 EMAIL = "support@carewise.in"
+# Public site URL used for canonical links, sitemap and structured data. Change when the domain changes.
+SITE_URL = "https://carewise.sketchxflow.com"
+ORG_NAME = "Carewise Healthcare"
+CENTRE_NAME = "Carewise Centre"
+CITY = "Mysuru"
 YEAR = "2026"
 
 IMG = {
@@ -96,20 +103,46 @@ def img(key, cls="", loading="lazy"):
 
 
 # ------------------------------------------------------------------ chrome --
-def head(title, desc):
+def head(title, desc, slug="index", jsonld=None, og_type="website"):
+    path = "" if slug == "index" else slug
+    canonical = f"{SITE_URL}/{path}"
+    plain_title = title.replace("&amp;", "&")
+    ld = "".join(f'\n    <script type="application/ld+json">{json.dumps(obj, ensure_ascii=False, separators=(",", ":"))}</script>' for obj in (jsonld or []))
     return f'''<!DOCTYPE html>
-<html lang="en">
+<html lang="en-IN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content="{desc}" />
-    <meta name="theme-color" content="#fbf7f0" />
+    <link rel="canonical" href="{canonical}" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="theme-color" content="#0c385f" />
+    <meta name="geo.region" content="IN-KA" />
+    <meta name="geo.placename" content="Mysuru, Karnataka" />
+    <meta property="og:type" content="{og_type}" />
+    <meta property="og:site_name" content="{ORG_NAME}" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:title" content="{plain_title}" />
+    <meta property="og:description" content="{desc}" />
+    <meta property="og:url" content="{canonical}" />
+    <meta property="og:image" content="{SITE_URL}/assets/img/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Carewise Centre, Mysuru: neurorehabilitation, palliative and elderly care" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{plain_title}" />
+    <meta name="twitter:description" content="{desc}" />
+    <meta name="twitter:image" content="{SITE_URL}/assets/img/og-image.jpg" />
+    <link rel="icon" href="favicon.png" type="image/png" sizes="64x64" />
+    <link rel="icon" href="assets/img/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
     <link rel="preload" href="assets/fonts/fraunces.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="assets/fonts/dm-sans.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="assets/css/site.css?v={V}" />
     <link rel="stylesheet" href="assets/css/motion.css?v={V}" />
-    <script>document.documentElement.classList.add("js");</script>
+    <script>document.documentElement.classList.add("js");</script>{ld}
   </head>
   <body>'''
 
@@ -276,7 +309,11 @@ def steps(items):
             <article class="step reveal"><h3>{t}</h3><p>{d}</p></article>''' for t, d in items) + "</div>"
 
 
+FAQ_COLLECTED = []
+
+
 def faq(items):
+    FAQ_COLLECTED.extend(items)
     return '<div class="faq reveal">' + "".join(f'''
             <details><summary>{q}{ico("plus")}</summary><p>{a}</p></details>''' for q, a in items) + "</div>"
 
@@ -648,6 +685,22 @@ def home_page():
 
     rooms = section(section_head("Your comfort is our priority", "Rooms designed for healing and peace") + ROOMS, "bg-sand")
 
+    glance = section(f'''
+          <div class="glance reveal" id="at-a-glance">
+            <div class="glance-head">
+              <span class="eyebrow">Carewise at a glance</span>
+              <h2>Key facts about Carewise Centre, Mysuru</h2>
+            </div>
+            <dl class="glance-grid">
+              <div><dt>What we are</dt><dd>Mysuru's first palliative care centre and a dedicated neurorehabilitation centre, run by {ORG_NAME}.</dd></div>
+              <div><dt>Who we treat</dt><dd>Patients of any age recovering from stroke, brain or spinal injury and surgery; people who need palliative, end-of-life, dementia or elderly care.</dd></div>
+              <div><dt>Care at the Centre</dt><dd>24/7 nursing, daily doctor rounds, in-house physiotherapy, speech and cognitive therapy, ventilator and BiPAP support, private rooms and a general ward.</dd></div>
+              <div><dt>Care at home</dt><dd>Doctor visits, nursing, physiotherapy, caretakers, nutrition, lab tests and post-operative care across Mysuru.</dd></div>
+              <div><dt>Track record</dt><dd>1000+ patients cared for over six years, with families in Mysuru, Bengaluru and abroad.</dd></div>
+              <div><dt>How to reach us</dt><dd><a href="{TEL}">{PHONE}</a> or <a href="{TEL2}">{PHONE2}</a> · <a href="{WA}">WhatsApp</a> · <a href="mailto:{EMAIL}">{EMAIL}</a> · Enquiries 8am to 9pm, Centre open 24/7.</dd></div>
+            </dl>
+          </div>''', "bg-sand")
+
     questions = section(section_head("Questions", "What families usually ask us") + faq([
         ("Who is the Centre right for?", "Anyone recovering from a stroke, brain or spinal injury or major surgery, and anyone who needs palliative or long-term medical care with 24/7 nursing. Our doctor assesses the patient and sets a plan on day one."),
         ("Can I get updates if I live in another city or abroad?", "Yes. Every family receives daily updates from the care team, and you can reach your coordinator at any time."),
@@ -655,7 +708,7 @@ def home_page():
         ("How quickly can care start?", "Home care usually begins within 24 to 48 hours of assessment. Admission to the centre can often be arranged the same day."),
     ]), "bg-sand")
 
-    return hero + centre_spot + neuro + video_stories + palliative + quote + facility_section() + conditions + rooms + stats(dark=True) + home_row + questions + cta("Ready to visit Carewise Centre?", "Book a walk-through with our care coordinator, or call to discuss recovery for your loved one.")
+    return hero + centre_spot + neuro + video_stories + palliative + quote + facility_section() + conditions + rooms + stats(dark=True) + home_row + glance + questions + cta("Ready to visit Carewise Centre?", "Book a walk-through with our care coordinator, or call to discuss recovery for your loved one.")
 
 
 def about_page():
@@ -865,26 +918,178 @@ def terms_page():
     ])
 
 
+def _strip(html):
+    return re.sub(r"<[^>]+>", "", html).replace("&amp;", "&").replace("&#39;", "'").strip()
+
+
+def ld_org():
+    return {
+        "@context": "https://schema.org",
+        "@type": ["MedicalClinic", "LocalBusiness"],
+        "@id": f"{SITE_URL}/#organization",
+        "name": CENTRE_NAME,
+        "alternateName": ORG_NAME,
+        "url": SITE_URL + "/",
+        "logo": f"{SITE_URL}/assets/img/logo.png",
+        "image": f"{SITE_URL}/assets/img/og-image.jpg",
+        "description": "Mysuru's first palliative care centre and a dedicated neurorehabilitation centre: stroke and brain or spinal injury recovery, post-surgical rehabilitation, palliative, end-of-life and elderly care with 24/7 nursing and daily doctor rounds. Home healthcare across Mysuru.",
+        "slogan": "Not just treating their condition. Celebrating their existence.",
+        "telephone": TEL.replace("tel:", ""),
+        "email": EMAIL,
+        "address": {"@type": "PostalAddress", "addressLocality": CITY, "addressRegion": "Karnataka", "addressCountry": "IN"},
+        "areaServed": [{"@type": "City", "name": "Mysuru"}, {"@type": "City", "name": "Bengaluru"}, {"@type": "State", "name": "Karnataka"}],
+        "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "00:00", "closes": "23:59"}],
+        "medicalSpecialty": ["PhysicalMedicineAndRehabilitation", "Geriatric", "Neurology", "PalliativeMedicine"],
+        "availableService": [
+            {"@type": "MedicalTherapy", "name": "Neurorehabilitation", "description": "Stroke, brain and spinal cord injury recovery with physiotherapy, speech and cognitive therapy."},
+            {"@type": "MedicalTherapy", "name": "Palliative care", "description": "Doctor-led pain and symptom relief with 24/7 nursing."},
+            {"@type": "MedicalTherapy", "name": "Elderly care", "description": "Daily living support, medication, nutrition and companionship."},
+            {"@type": "MedicalTherapy", "name": "Post-surgical rehabilitation", "description": "Supervised recovery, wound care and physiotherapy after surgery."},
+            {"@type": "MedicalTherapy", "name": "Home healthcare", "description": "Doctor visits, nursing, physiotherapy and lab tests at home in Mysuru."},
+        ],
+        "sameAs": [INSTAGRAM_URL],
+        "foundingDate": "2020",
+        "priceRange": "₹₹",
+    }
+
+
+def ld_website():
+    return {"@context": "https://schema.org", "@type": "WebSite", "@id": f"{SITE_URL}/#website", "url": SITE_URL + "/", "name": CENTRE_NAME, "publisher": {"@id": f"{SITE_URL}/#organization"}, "inLanguage": "en-IN"}
+
+
+def ld_breadcrumb(slug, title):
+    items = [{"@type": "ListItem", "position": 1, "name": "Home", "item": SITE_URL + "/"}]
+    if slug != "index":
+        items.append({"@type": "ListItem", "position": 2, "name": _strip(title).split("|")[0].strip(), "item": f"{SITE_URL}/{slug}"})
+    return {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": items}
+
+
+def ld_faq(items):
+    return {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": _strip(q), "acceptedAnswer": {"@type": "Answer", "text": _strip(a)}} for q, a in items]}
+
+
+def ld_videos():
+    return [{
+        "@context": "https://schema.org", "@type": "VideoObject",
+        "name": f"{name}: testimonial for Carewise Centre, Mysuru",
+        "description": f"{name} ({role}) shares their experience of care at Carewise Centre, Mysuru.",
+        "thumbnailUrl": f"{SITE_URL}/assets/video/testimonials/{slug}.jpg",
+        "contentUrl": f"{SITE_URL}/assets/video/testimonials/{slug}.mp4",
+        "uploadDate": "2026-11-11",
+        "publisher": {"@id": f"{SITE_URL}/#organization"},
+    } for slug, name, role in LOCAL_VIDEOS]
+
+
+def ld_webpage(slug, title, desc):
+    return {"@context": "https://schema.org", "@type": "WebPage", "url": f"{SITE_URL}/{'' if slug == 'index' else slug}", "name": _strip(title), "description": desc, "isPartOf": {"@id": f"{SITE_URL}/#website"}, "about": {"@id": f"{SITE_URL}/#organization"}, "inLanguage": "en-IN"}
+
+
 PAGES = {
-    "index": ("Carewise Centre | Neurorehabilitation &amp; Palliative Care, Mysuru", "Carewise Centre, Mysuru's first palliative and neurorehabilitation centre: stroke recovery, 24/7 nursing and doctor-guided care. 1000+ patients impacted.", home_page),
-    "about": ("About Us | Carewise", "Learn about Carewise, Mysuru's first palliative care centre and home healthcare service trusted by families for 6+ years.", about_page),
-    "centre": ("Carewise Centre | 24/7 Palliative &amp; Senior Care in Mysuru", "Private and general rooms with 24/7 medical supervision, palliative care, rehabilitation and long-term care at the Carewise Centre, Mysuru.", centre_page),
-    "home-care": ("Home Healthcare in Mysuru | Carewise", "Doctor visits, nursing, physiotherapy, caretakers and lab tests at home for patients in Mysuru.", home_care_page),
-    "services": ("Our Services | Carewise", "Palliative care, nursing, rehabilitation, doctor visits and physiotherapy at the Carewise Centre or at home.", services_page),
-    "team": ("Our Team | Carewise", "Meet the doctor-led, verified team of nurses, therapists and coordinators behind Carewise.", team_page),
-    "gallery": ("Facility Gallery | Carewise", "Photos of the Carewise Centre rooms, spaces and care in Mysuru.", gallery_page),
-    "videos": ("Videos &amp; Stories | Carewise", "Films and stories from Carewise families and our care team.", videos_page),
-    "contact": ("Contact Carewise | Talk to Our Team", "Call, WhatsApp or message Carewise Healthcare in Mysuru. Available every day for enquiries and admissions.", contact_page),
-    "privacy-policy": ("Privacy Policy | Carewise", "How Carewise Healthcare collects, uses and protects personal information.", privacy_page),
-    "terms-of-service": ("Terms of Service | Carewise", "Terms governing use of the Carewise website and services.", terms_page),
+    "index": ("Carewise Centre Mysuru | Neurorehabilitation, Palliative &amp; Elderly Care", "Carewise Centre is Mysuru's first palliative care centre and a dedicated neurorehabilitation centre: stroke and injury recovery, post-surgical rehab, palliative and elderly care with 24/7 nursing and daily doctor rounds. 1000+ patients cared for.", home_page),
+    "about": ("About Carewise | Mysuru's First Palliative &amp; Neurorehabilitation Centre", "The story, values and team behind Carewise Centre, Mysuru: 6+ years of doctor-guided neurorehabilitation, palliative and elderly care for 1000+ patients.", about_page),
+    "centre": ("Carewise Centre | Neuro Rehab &amp; Palliative Care Centre in Mysuru", "Private and general rooms with 24/7 nursing, daily doctor rounds, in-house physiotherapy, ventilator and BiPAP support, palliative and long-term care at Carewise Centre, Mysuru.", centre_page),
+    "home-care": ("Home Healthcare in Mysuru | Nursing, Physiotherapy &amp; Doctor Visits | Carewise", "Doctor visits, nursing, physiotherapy, caretakers, lab tests and post-operative care at home in Mysuru from the Carewise Centre team.", home_care_page),
+    "services": ("Services | Neurorehabilitation, Palliative, Elderly &amp; Home Care in Mysuru", "Stroke rehabilitation, brain and spinal injury recovery, post-surgical rehab, palliative, end-of-life, dementia and elderly care at Carewise Centre or at home in Mysuru.", services_page),
+    "team": ("Our Team | Doctors, Nurses &amp; Therapists at Carewise Centre, Mysuru", "The doctor-led, background-verified team of physicians, nurses, physiotherapists, nutritionists and counsellors behind Carewise Centre, Mysuru.", team_page),
+    "gallery": ("Facility Gallery | Inside Carewise Centre, Mysuru", "Photos of Carewise Centre, Mysuru: private rooms, rehabilitation ward, therapy space, reception and the day we opened.", gallery_page),
+    "videos": ("Patient &amp; Family Video Testimonials | Carewise Centre, Mysuru", "Patients, families and doctors share their experience of recovery and care at Carewise Centre, Mysuru, in short videos.", videos_page),
+    "contact": ("Contact Carewise Centre, Mysuru | Call +91 76194 57863", "Call, WhatsApp or message Carewise Centre in Mysuru for admissions, home healthcare and enquiries. Open 24/7.", contact_page),
+    "privacy-policy": ("Privacy Policy | Carewise Healthcare", "How Carewise Healthcare collects, uses and protects personal information.", privacy_page),
+    "terms-of-service": ("Terms of Service | Carewise Healthcare", "Terms governing use of the Carewise website and services.", terms_page),
 }
 
 
 def build():
+    import datetime
+    today = datetime.date.today().isoformat()
     for slug, (title, desc, fn) in PAGES.items():
-        html = head(title, desc) + header(slug) + fn() + footer()
+        FAQ_COLLECTED.clear()
+        body = header(slug) + fn() + footer()
+        ld = [ld_org(), ld_website(), ld_webpage(slug, title, desc), ld_breadcrumb(slug, title)]
+        if FAQ_COLLECTED:
+            ld.append(ld_faq(list(FAQ_COLLECTED)))
+        if slug in ("index", "videos") and LOCAL_VIDEOS:
+            ld.extend(ld_videos())
+        html = head(title, desc, slug, ld) + body
         (ROOT / f"{slug}.html").write_text(html, encoding="utf-8")
         print("wrote", f"{slug}.html")
+
+    # sitemap.xml
+    pri = {"index": "1.0", "centre": "0.9", "services": "0.9", "home-care": "0.8", "about": "0.7", "contact": "0.8", "videos": "0.6", "team": "0.6", "gallery": "0.5", "privacy-policy": "0.2", "terms-of-service": "0.2"}
+    urls = "".join(f"  <url><loc>{SITE_URL}/{'' if k == 'index' else k}</loc><lastmod>{today}</lastmod><changefreq>monthly</changefreq><priority>{pri.get(k, '0.5')}</priority></url>\n" for k in PAGES)
+    (ROOT / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n', encoding="utf-8")
+
+    # robots.txt (AI crawlers explicitly allowed for GEO)
+    (ROOT / "robots.txt").write_text(f'''User-agent: *
+Allow: /
+Disallow: /api/
+
+User-agent: GPTBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: {SITE_URL}/sitemap.xml
+''', encoding="utf-8")
+
+    # site.webmanifest
+    (ROOT / "site.webmanifest").write_text(json.dumps({
+        "name": "Carewise Centre, Mysuru", "short_name": "Carewise", "start_url": "/", "display": "browser",
+        "background_color": "#fdfbf7", "theme_color": "#0c385f",
+        "icons": [{"src": "/assets/img/icon-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "/assets/img/icon-512.png", "sizes": "512x512", "type": "image/png"}],
+    }, indent=2), encoding="utf-8")
+
+    # llms.txt: a plain, factual summary for AI search engines
+    (ROOT / "llms.txt").write_text(f'''# Carewise Centre, Mysuru
+
+> Mysuru's first palliative care centre and a dedicated neurorehabilitation centre in Mysuru, Karnataka, India. Doctor-guided care with 24/7 nursing for stroke, brain and spinal injury and post-surgical recovery, plus palliative, end-of-life, dementia and elderly care. Home healthcare across Mysuru. 1000+ patients cared for over 6+ years.
+
+## Key facts
+- Name: Carewise Centre (Carewise Healthcare)
+- Location: Mysuru, Karnataka, India
+- Founded: Mysuru's first palliative care centre, operating for over six years
+- Patients cared for: 1000+
+- Phone: {PHONE} / {PHONE2}
+- WhatsApp: {WA}
+- Email: {EMAIL}
+- Hours: Centre open 24/7; enquiries 8am to 9pm daily
+- Instagram: {INSTAGRAM_URL}
+
+## Services
+- Neurorehabilitation: stroke recovery, brain and spinal cord injury, Parkinson's and movement disorders, speech and swallowing therapy, cognitive rehabilitation, post-surgical neuro recovery, mobility and fall prevention, cardiac and pulmonary rehab
+- Palliative and end-of-life care with doctor-led pain and symptom management
+- Elderly care, dementia and Alzheimer's care, cancer support, long-term medical care
+- Ventilator, BiPAP and CPAP support with trained respiratory staff
+- Rooms: private rooms with an attendant bed and ensuite bathroom; general ward
+- Home healthcare in Mysuru: doctor visits, nursing, physiotherapy, caretakers, nutrition, remote monitoring, lab tests, post-operative care
+
+## How admission works
+1. Call or visit and speak with a care coordinator.
+2. A doctor assesses the patient and sets a care plan.
+3. Choose a private room or general ward; costs are shared transparently.
+4. Families receive daily updates and can visit freely.
+
+## Pages
+- [Home]({SITE_URL}/)
+- [Carewise Centre]({SITE_URL}/centre)
+- [Services]({SITE_URL}/services)
+- [Home healthcare]({SITE_URL}/home-care)
+- [About]({SITE_URL}/about)
+- [Team]({SITE_URL}/team)
+- [Video testimonials]({SITE_URL}/videos)
+- [Gallery]({SITE_URL}/gallery)
+- [Contact]({SITE_URL}/contact)
+''', encoding="utf-8")
+    print("wrote sitemap.xml robots.txt site.webmanifest llms.txt")
 
 
 if __name__ == "__main__":

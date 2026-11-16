@@ -15,4 +15,4 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://carewise.sketchxflow.com/sitemap.xml
+Sitemap: https://carewisemysuru.com/sitemap.xml

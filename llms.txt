@@ -28,12 +28,12 @@
 4. Families receive daily updates and can visit freely.
 
 ## Pages
-- [Home](https://carewise.sketchxflow.com/)
-- [Carewise Centre](https://carewise.sketchxflow.com/centre)
-- [Services](https://carewise.sketchxflow.com/services)
-- [Home healthcare](https://carewise.sketchxflow.com/home-care)
-- [About](https://carewise.sketchxflow.com/about)
-- [Team](https://carewise.sketchxflow.com/team)
-- [Video testimonials](https://carewise.sketchxflow.com/videos)
-- [Gallery](https://carewise.sketchxflow.com/gallery)
-- [Contact](https://carewise.sketchxflow.com/contact)
+- [Home](https://carewisemysuru.com/)
+- [Carewise Centre](https://carewisemysuru.com/centre)
+- [Services](https://carewisemysuru.com/services)
+- [Home healthcare](https://carewisemysuru.com/home-care)
+- [About](https://carewisemysuru.com/about)
+- [Team](https://carewisemysuru.com/team)
+- [Video testimonials](https://carewisemysuru.com/videos)
+- [Gallery](https://carewisemysuru.com/gallery)
+- [Contact](https://carewisemysuru.com/contact)

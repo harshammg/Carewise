@@ -43,3 +43,7 @@ Local preview with `python -m http.server` has no `/api`, so you will always see
 ## Hero background photos
 
 Put the photos you want behind the home-page hero in `hero-images/` (JPG, PNG, HEIC or WEBP), then run `python tools/build-site.py`. They are resized into `assets/img/hero/` and the hero slides through them in filename order. One photo shows a still image; two or more slide. Delete a file and rebuild to remove it.
+
+## Domain
+
+The public domain is https://carewisemysuru.com. Canonical links, sitemap and structured data use `SITE_URL` in `tools/build-site.py`; change it there and rebuild if the domain ever changes.

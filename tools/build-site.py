@@ -20,7 +20,7 @@ TEL2 = "tel:+917619457864"
 WA = "https://wa.me/917619457863"
 EMAIL = "support@carewise.in"
 # Public site URL used for canonical links, sitemap and structured data. Change when the domain changes.
-SITE_URL = "https://carewise.sketchxflow.com"
+SITE_URL = "https://carewisemysuru.com"
 ORG_NAME = "Carewise Healthcare"
 CENTRE_NAME = "Carewise Centre"
 CITY = "Mysuru"
